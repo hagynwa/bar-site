@@ -15,18 +15,34 @@ const WASENDER_URL = 'https://www.wasenderapi.com/api/send-message';
 
 const clip = (v, n) => String(v ?? '').trim().slice(0, n);
 
-const buildText = d => [
-  'היי בר, הגעתי מהאתר שלך.',
-  '',
-  `*שם:* ${d.name}`,
-  d.company ? `*חברה:* ${d.company}` : null,
-  `*טלפון:* ${d.phone}`,
-  d.email ? `*אימייל:* ${d.email}` : null,
-  `*נושא:* ${d.topic || 'שיחת היכרות'}`,
-  '',
-  '*הודעה:*',
-  d.message
-].filter(line => line !== null).join('\n');
+const TEMPLATES = {
+  he: {
+    greeting: 'היי בר, הגעתי מהאתר שלך.',
+    labels: { name: 'שם', company: 'חברה', phone: 'טלפון', email: 'אימייל', topic: 'נושא', message: 'הודעה' },
+    defaultTopic: 'שיחת היכרות'
+  },
+  en: {
+    greeting: 'Hi Bar, I found you through your website.',
+    labels: { name: 'Name', company: 'Company', phone: 'Phone', email: 'Email', topic: 'Topic', message: 'Message' },
+    defaultTopic: 'Intro call'
+  }
+};
+
+const buildText = (d, lang) => {
+  const { greeting, labels: l, defaultTopic } = lang === 'en' ? TEMPLATES.en : TEMPLATES.he;
+  return [
+    greeting,
+    '',
+    `*${l.name}:* ${d.name}`,
+    d.company ? `*${l.company}:* ${d.company}` : null,
+    `*${l.phone}:* ${d.phone}`,
+    d.email ? `*${l.email}:* ${d.email}` : null,
+    `*${l.topic}:* ${d.topic || defaultTopic}`,
+    '',
+    `*${l.message}:*`,
+    d.message
+  ].filter(line => line !== null).join('\n');
+};
 
 export default {
   async fetch(request, env) {
@@ -68,7 +84,7 @@ export default {
     const res = await fetch(WASENDER_URL, {
       method: 'POST',
       headers: { Authorization: `Bearer ${env.WASENDER_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: env.TO_NUMBER || '+972503337074', text: buildText(d) })
+      body: JSON.stringify({ to: env.TO_NUMBER || '+972503337074', text: buildText(d, body.lang) })
     });
     const json = await res.json().catch(() => ({}));
     if (!res.ok || json.success === false) return reply({ ok: false, error: 'upstream_failed' }, 502);

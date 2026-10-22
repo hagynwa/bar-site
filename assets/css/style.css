@@ -149,6 +149,16 @@ body::before {
 }
 .nav a:hover { color: var(--ink); }
 .nav a:hover::after { transform: scaleX(1); }
+.masthead__actions { display: flex; align-items: center; gap: 10px; flex: none; }
+.lang {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 40px; height: 40px; padding-inline: 10px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  font: 600 .8125rem/1 var(--f-mono); letter-spacing: .04em;
+  color: var(--ink); text-decoration: none;
+  transition: border-color .15s, background-color .15s;
+}
+.lang:hover { border-color: var(--ink); background: var(--surface); }
 
 /* ---------- Hero ---------- */
 .hero { padding-block: clamp(36px, 5vw, 80px) clamp(56px, 7vw, 104px); }
@@ -313,7 +323,7 @@ body::before {
 .service p { color: var(--ink-soft); font-size: 1rem; line-height: 1.65; }
 .service .tags {
   font: 500 var(--t-xs)/1.6 var(--f-mono); color: var(--ink-faint);
-  text-align: right; letter-spacing: .01em;
+  letter-spacing: .01em;
 }
 
 /* Career Gantt */
@@ -493,7 +503,7 @@ textarea.input { min-height: 136px; resize: vertical; }
 }
 .chat__who { display: grid; line-height: 1.35; min-width: 0; }
 .chat__who strong { font-size: .9375rem; }
-.chat__who span { font: 400 var(--t-xs) var(--f-mono); color: var(--ink-faint); text-align: right; }
+.chat__who span { font: 400 var(--t-xs) var(--f-mono); color: var(--ink-faint); }
 .chat__label {
   margin-inline-start: auto; padding: 5px 8px; border-radius: var(--radius);
   background: var(--paper); color: var(--ink-faint);
@@ -530,7 +540,7 @@ textarea.input { min-height: 136px; resize: vertical; }
 .channel__icon svg { width: 20px; height: 20px; }
 .channel__text { display: grid; line-height: 1.35; min-width: 0; }
 .channel__text strong { font-size: .9375rem; font-weight: 600; }
-.channel__text span { font: 400 .8125rem var(--f-mono); color: var(--ink-faint); text-align: right; overflow-wrap: anywhere; }
+.channel__text span { font: 400 .8125rem var(--f-mono); color: var(--ink-faint); overflow-wrap: anywhere; }
 .channel__arrow { width: 18px; height: 18px; color: var(--ink-faint); transition: transform .2s var(--ease), color .2s; }
 .channel a:hover .channel__icon { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .channel a:hover .channel__arrow { transform: translateX(-4px); color: var(--ink); }
@@ -556,12 +566,39 @@ textarea.input { min-height: 136px; resize: vertical; }
 .totop { font-size: .875rem; font-weight: 500; color: var(--ink-soft); text-decoration: none; }
 .totop:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
 
+/* ---------- Direction ----------
+   The base styles are written for the Hebrew (RTL) page. The English
+   page mirrors the details that physical directions can't express. */
+html[dir="rtl"] :is(.service .tags, .chat__who span, .channel__text span) { text-align: right; }
+
+html[lang="en"] {
+  --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+html[dir="ltr"] .nav a::after { transform-origin: left; }
+html[dir="ltr"] .lt { animation-name: lt-in-ltr; }
+html[dir="ltr"] .ticker__label { padding-inline: max(20px, env(safe-area-inset-left, 0px)) 22px; }
+html[dir="ltr"] .ticker__clock { padding-inline: 20px max(20px, env(safe-area-inset-right, 0px)); }
+html[dir="ltr"] .ticker__viewport {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 56px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 56px), transparent);
+}
+html[dir="ltr"] .ticker__track { animation-name: crawl-ltr; }
+html[dir="ltr"] .g-track { background-image: repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px calc(100% / 15)); }
+html[dir="ltr"] .g-axis__scale span { transform: translateX(-50%); }
+html[dir="ltr"] .g-axis__scale span:first-child { transform: none; }
+html[dir="ltr"] .bubble { border-radius: 12px 12px 3px 12px; }
+html[dir="ltr"] .channel a:hover .channel__arrow { transform: translateX(4px); }
+
 /* ---------- Motion ---------- */
 @keyframes bars-in { from { gap: 0; padding-inline: 0; } }
 @keyframes bar-in { from { height: 100%; border-radius: 0; } }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes lt-in { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
+@keyframes lt-in-ltr { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes crawl { to { transform: translateX(50%); } }
+@keyframes crawl-ltr { to { transform: translateX(-50%); } }
 @keyframes level { to { clip-path: inset(var(--hi) 0 0 0); } }
 @keyframes bump { 0% { transform: scaleY(1); } 40% { transform: scaleY(.35); } 100% { transform: scaleY(1); } }
 @keyframes pulse {
@@ -590,13 +627,19 @@ textarea.input { min-height: 136px; resize: vertical; }
 }
 @media (max-width: 760px) {
   .nav { display: none; }
-  .masthead .btn { margin-inline-start: auto; }
+  .masthead__actions { margin-inline-start: auto; }
   .section__head { grid-template-columns: minmax(0, 1fr); }
   .ticker__clock { display: none; }
   .g-row { grid-template-columns: minmax(0, 1fr); padding-block: 20px; }
   .g-axis { grid-template-columns: minmax(0, 1fr); }
   .g-axis__scale { grid-column: 1; }
   .gantt::after { display: none; }
+}
+@media (max-width: 480px) {
+  .masthead__in { gap: 12px; }
+  .brand { gap: 8px; }
+  .brand__name { font-size: 1.625rem; }
+  .masthead .btn--sm { padding-inline: 12px; }
 }
 @media (max-width: 600px) {
   .services { grid-template-columns: minmax(0, 1fr); gap: 40px; }

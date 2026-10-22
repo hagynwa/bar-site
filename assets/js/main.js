@@ -4,11 +4,56 @@
   const CONFIG = {
     // Bar's WhatsApp number, international format without "+".
     whatsapp: '972503337074',
-    // Optional: URL of the WaSender relay (see relay/README.md).
+    // Optional: URL of the WaSender relay (see README.md).
     // Empty = the form opens WhatsApp with a ready-made message.
     relayUrl: ''
   };
 
+  const STRINGS = {
+    he: {
+      locale: 'he-IL',
+      greeting: 'היי בר, הגעתי מהאתר שלך.',
+      labels: { name: 'שם', company: 'חברה', phone: 'טלפון', email: 'אימייל', topic: 'נושא', message: 'הודעה' },
+      placeholders: { name: 'השם שלכם', phone: '050-0000000', message: 'כמה מילים על מה שאתם צריכים' },
+      defaultTopic: 'שיחת היכרות',
+      errors: {
+        name: 'כתבו את השם שלכם, כדי שאדע למי לחזור.',
+        phoneEmpty: 'השאירו מספר טלפון לחזרה.',
+        phoneInvalid: 'המספר לא נראה תקין. נסו בפורמט 050-1234567.',
+        email: 'כתובת האימייל לא נראית תקינה. בדקו שיש בה @ ונקודה.',
+        message: 'כתבו כמה מילים על מה שאתם צריכים.'
+      },
+      submit: 'שליחה בוואטסאפ',
+      sending: 'שליחה…',
+      opened: 'וואטסאפ נפתח עם ההודעה. נשאר רק ללחוץ על שליחה. לא נפתח?',
+      manual: 'פתיחה ידנית של וואטסאפ',
+      relayOk: 'ההודעה הגיעה אליי לוואטסאפ. אחזור אליכם בהקדם.',
+      relayFail: 'השליחה האוטומטית לא עברה. אפשר לשלוח את אותה הודעה ישירות מוואטסאפ:'
+    },
+    en: {
+      locale: 'en-GB',
+      greeting: 'Hi Bar, I found you through your website.',
+      labels: { name: 'Name', company: 'Company', phone: 'Phone', email: 'Email', topic: 'Topic', message: 'Message' },
+      placeholders: { name: 'Your name', phone: '+972 50-000-0000', message: 'A few words about what you need' },
+      defaultTopic: 'Intro call',
+      errors: {
+        name: 'Add your name so I know who to get back to.',
+        phoneEmpty: 'Add a phone number so I can reach you.',
+        phoneInvalid: 'That number doesn’t look right. Try a format like +972 50-123-4567.',
+        email: 'That email doesn’t look right. Check it has an @ and a dot.',
+        message: 'Add a few words about what you need.'
+      },
+      submit: 'Send on WhatsApp',
+      sending: 'Sending…',
+      opened: 'WhatsApp is open with your message. Just hit send. Didn’t open?',
+      manual: 'Open WhatsApp manually',
+      relayOk: 'Your message reached me on WhatsApp. I’ll get back to you soon.',
+      relayFail: 'Automatic sending didn’t go through. You can send the same message straight from WhatsApp:'
+    }
+  };
+
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'he';
+  const t = STRINGS[lang];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const waLink = text => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`;
 
@@ -19,9 +64,7 @@
   onScroll();
 
   /* ---------- Direct WhatsApp links get a greeting ---------- */
-  document.querySelectorAll('.js-wa').forEach(a => {
-    a.href = waLink('היי בר, הגעתי מהאתר שלך.');
-  });
+  document.querySelectorAll('.js-wa').forEach(a => { a.href = waLink(t.greeting); });
 
   /* ---------- Timecode: PAL 25fps, starting at the 20:00 news hour ---------- */
   const tc = document.getElementById('timecode');
@@ -48,7 +91,7 @@
   /* ---------- Israel clock in the ticker ---------- */
   const clock = document.getElementById('clock');
   if (clock) {
-    const fmt = new Intl.DateTimeFormat('he-IL', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jerusalem' });
+    const fmt = new Intl.DateTimeFormat(t.locale, { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jerusalem' });
     const tick = () => { clock.textContent = fmt.format(new Date()); };
     tick();
     setInterval(tick, 15000);
@@ -71,27 +114,28 @@
     phone: val('phone'),
     email: val('email'),
     company: val('company'),
-    topic: val('topic') || 'שיחת היכרות',
+    topic: val('topic') || t.defaultTopic,
     message: val('message')
   });
 
   // One description of the message, used for both the preview and the text sent.
   const lines = d => [
-    { text: 'היי בר, הגעתי מהאתר שלך.' },
+    { text: t.greeting },
     { blank: true },
-    { label: 'שם', value: d.name, ph: 'השם שלכם' },
-    { label: 'חברה', value: d.company, optional: true },
-    { label: 'טלפון', value: d.phone, ph: '050-0000000' },
-    { label: 'אימייל', value: d.email, optional: true },
-    { label: 'נושא', value: d.topic },
+    { key: 'name', value: d.name },
+    { key: 'company', value: d.company, optional: true },
+    { key: 'phone', value: d.phone },
+    { key: 'email', value: d.email, optional: true },
+    { key: 'topic', value: d.topic },
     { blank: true },
-    { label: 'הודעה', value: d.message, ph: 'כמה מילים על מה שאתם צריכים', block: true }
+    { key: 'message', value: d.message, block: true }
   ].filter(l => !(l.optional && !l.value));
 
   const buildText = d => lines(d).map(l => {
     if (l.blank) return '';
     if (l.text) return l.text;
-    return l.block ? `*${l.label}:*\n${l.value}` : `*${l.label}:* ${l.value}`;
+    const label = t.labels[l.key];
+    return l.block ? `*${label}:*\n${l.value}` : `*${label}:* ${l.value}`;
   }).join('\n');
 
   const renderPreview = () => {
@@ -101,14 +145,14 @@
       if (l.blank) return;
       if (l.text) { frag.append(l.text); return; }
       const b = document.createElement('b');
-      b.textContent = `${l.label}:`;
+      b.textContent = `${t.labels[l.key]}:`;
       frag.append(b, l.block ? '\n' : ' ');
       if (l.value) {
         frag.append(l.value);
       } else {
         const ph = document.createElement('span');
         ph.className = 'ph';
-        ph.textContent = l.ph;
+        ph.textContent = t.placeholders[l.key];
         frag.append(ph);
       }
     });
@@ -116,13 +160,13 @@
   };
 
   const rules = {
-    name: v => v ? '' : 'כתבו את השם שלכם, כדי שאדע למי לחזור.',
+    name: v => v ? '' : t.errors.name,
     phone: v => {
-      if (!v) return 'השאירו מספר טלפון לחזרה.';
-      return /^\+?\d{9,15}$/.test(v.replace(/[\s\-().]/g, '')) ? '' : 'המספר לא נראה תקין. נסו בפורמט 050-1234567.';
+      if (!v) return t.errors.phoneEmpty;
+      return /^\+?\d{9,15}$/.test(v.replace(/[\s\-().]/g, '')) ? '' : t.errors.phoneInvalid;
     },
-    email: v => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'כתובת האימייל לא נראית תקינה. בדקו שיש בה @ ונקודה.',
-    message: v => v ? '' : 'כתבו כמה מילים על מה שאתם צריכים.'
+    email: v => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : t.errors.email,
+    message: v => v ? '' : t.errors.message
   };
 
   const check = name => {
@@ -151,7 +195,7 @@
       a.href = linkUrl;
       a.target = '_blank';
       a.rel = 'noopener';
-      a.textContent = 'פתיחה ידנית של וואטסאפ';
+      a.textContent = t.manual;
       status.append(' ', a);
     }
     status.hidden = false;
@@ -161,7 +205,7 @@
   const setBusy = busy => {
     submit.setAttribute('aria-busy', String(busy));
     submit.disabled = busy;
-    submit.querySelector('.btn__label').textContent = busy ? 'שליחה…' : 'שליחה בוואטסאפ';
+    submit.querySelector('.btn__label').textContent = busy ? t.sending : t.submit;
   };
 
   const sendViaRelay = async d => {
@@ -169,7 +213,7 @@
       const res = await fetch(CONFIG.relayUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...d, website: val('website') })
+        body: JSON.stringify({ ...d, lang, website: val('website') })
       });
       const json = await res.json().catch(() => ({}));
       return res.ok && json.ok === true;
@@ -196,19 +240,19 @@
       const ok = await sendViaRelay(d);
       setBusy(false);
       if (ok) {
-        showStatus('ההודעה הגיעה אליי לוואטסאפ. אחזור אליכם בהקדם.');
+        showStatus(t.relayOk);
         form.reset();
         renderPreview();
         return;
       }
-      showStatus('השליחה האוטומטית לא עברה. אפשר לשלוח את אותה הודעה ישירות מוואטסאפ:', url);
+      showStatus(t.relayFail, url);
       return;
     }
 
     const win = window.open(url, '_blank');
     if (win) {
       win.opener = null;
-      showStatus('וואטסאפ נפתח עם ההודעה. נשאר רק ללחוץ על שליחה. לא נפתח?', url);
+      showStatus(t.opened, url);
     } else {
       window.location.href = url;
     }
