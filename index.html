@@ -330,110 +330,67 @@
 
     <!-- ============ CONTACT ============ -->
     <section class="section section--contact" id="contact" aria-labelledby="contact-title">
-      <div class="wrap section__in">
-        <header class="section__head">
+      <div class="wrap contact">
+        <div class="contact__intro">
           <h2 class="section__title" id="contact-title">בואו נדבר</h2>
-          <p class="section__lead">ממלאים כמה פרטים ולוחצים על שליחה. וואטסאפ ייפתח עם הודעה מסודרת, מוכנה לשליחה אליי.</p>
-        </header>
-
-        <div class="contact">
-          <form class="form" id="contact-form" novalidate>
-            <div class="form__row">
-              <div class="field">
-                <label for="f-name">שם מלא</label>
-                <input class="input" id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="name-error" placeholder="ישראלה ישראלי">
-                <p class="error" id="name-error"></p>
-              </div>
-              <div class="field">
-                <label for="f-phone">טלפון</label>
-                <input class="input" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required aria-describedby="phone-error" placeholder="050-1234567">
-                <p class="error" id="phone-error"></p>
-              </div>
-            </div>
-            <div class="form__row">
-              <div class="field">
-                <label for="f-email">אימייל <span class="opt">רשות</span></label>
-                <input class="input" id="f-email" name="email" type="email" autocomplete="email" dir="ltr" aria-describedby="email-error" placeholder="name@company.co.il">
-                <p class="error" id="email-error"></p>
-              </div>
-              <div class="field">
-                <label for="f-company">חברה או עסק <span class="opt">רשות</span></label>
-                <input class="input" id="f-company" name="company" type="text" autocomplete="organization" placeholder="שם החברה">
-              </div>
-            </div>
-
-            <fieldset class="field chips">
-              <legend>במה אפשר לעזור?</legend>
-              <div class="chips__list">
-                <label class="chip"><input type="radio" name="topic" id="t-growth" value="אסטרטגיית צמיחה" checked><span>אסטרטגיית צמיחה</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-funnel" value="משפכים וקמפיינים"><span>משפכים וקמפיינים</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-data" value="מדדים ו-KPI"><span>מדדים ו-KPI</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-intro" value="שיחת היכרות"><span>שיחת היכרות</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-other" value="משהו אחר"><span>משהו אחר</span></label>
-              </div>
-            </fieldset>
-
-            <div class="field">
-              <label for="f-message">ההודעה</label>
-              <textarea class="input" id="f-message" name="message" rows="4" required aria-describedby="message-error" placeholder="ספרו בכמה מילים על העסק ועל מה שאתם צריכים"></textarea>
-              <p class="error" id="message-error"></p>
-            </div>
-
-            <div class="hp" aria-hidden="true">
-              <label for="f-website">אתר</label>
-              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-
-            <div class="form__submit">
-              <button class="btn btn--chroma btn--wide" type="submit" id="f-submit">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.6z"/><path d="M9.2 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c-.1.2-.1.4 0 .6.6 1.1 1.5 2 2.6 2.6.2.1.4.1.6 0l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.5-2.8-.1a9.6 9.6 0 0 1-4.4-4.4c-.6-1.2-.4-2.2-.1-2.8z" fill="currentColor" stroke="none"/></svg>
-                <span class="btn__label">שליחה בוואטסאפ</span>
-              </button>
-              <p class="form__note" id="form-note">הלחיצה פותחת את וואטסאפ עם ההודעה. נשאר רק ללחוץ על שליחה.</p>
-              <p class="status" id="form-status" role="status" hidden></p>
-            </div>
-          </form>
-
-          <aside class="aside" aria-label="תצוגה מקדימה ודרכי קשר">
-            <div class="chat">
-              <div class="chat__head">
-                <span class="avatar" aria-hidden="true"><img src="assets/img/bar-avatar.jpg" width="42" height="42" alt=""></span>
-                <span class="chat__who"><strong>בר שלו-נתן</strong><span dir="ltr">050-333-7074</span></span>
-                <span class="chat__label">תצוגה מקדימה</span>
-              </div>
-              <div class="chat__body">
-                <div class="bubble">
-                  <p class="bubble__text" id="preview" aria-live="off"></p>
-                  <span class="bubble__meta">עכשיו</span>
-                </div>
-              </div>
-            </div>
-
-            <ul class="channels" aria-label="דרכי קשר נוספות">
-              <li class="channel">
-                <a class="js-wa" href="https://wa.me/972503337074" target="_blank" rel="noopener">
-                  <span class="channel__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.6z"/><path d="M9.2 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c-.1.2-.1.4 0 .6.6 1.1 1.5 2 2.6 2.6.2.1.4.1.6 0l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.5-2.8-.1a9.6 9.6 0 0 1-4.4-4.4c-.6-1.2-.4-2.2-.1-2.8z" fill="currentColor" stroke="none"/></svg></span>
-                  <span class="channel__text"><strong>וואטסאפ</strong><span dir="ltr">050-333-7074</span></span>
-                  <svg class="channel__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
-                </a>
-              </li>
-              <li class="channel">
-                <a href="https://www.linkedin.com/in/bar-shalev-nathan" target="_blank" rel="noopener">
-                  <span class="channel__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4z"/></svg></span>
-                  <span class="channel__text"><strong>לינקדאין</strong><span dir="ltr">in/bar-shalev-nathan</span></span>
-                  <svg class="channel__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
-                </a>
-              </li>
-              <li class="channel">
-                <a href="https://www.instagram.com/shalev.bar/" target="_blank" rel="noopener">
-                  <span class="channel__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></span>
-                  <span class="channel__text"><strong>אינסטגרם</strong><span dir="ltr">@shalev.bar</span></span>
-                  <svg class="channel__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>
-                </a>
-              </li>
-            </ul>
-          </aside>
+          <p class="section__lead">כמה פרטים, לחיצה אחת, וההודעה נפתחת בוואטסאפ מוכנה לשליחה אליי.</p>
+          <ul class="direct" aria-label="דרכי קשר ישירות">
+            <li><a class="js-wa" href="https://wa.me/972503337074" target="_blank" rel="noopener"><span>וואטסאפ</span><span class="direct__val" dir="ltr">050-333-7074</span></a></li>
+            <li><a href="https://www.linkedin.com/in/bar-shalev-nathan" target="_blank" rel="noopener"><span>לינקדאין</span><span class="direct__val" dir="ltr">in/bar-shalev-nathan</span></a></li>
+            <li><a href="https://www.instagram.com/shalev.bar/" target="_blank" rel="noopener"><span>אינסטגרם</span><span class="direct__val" dir="ltr">@shalev.bar</span></a></li>
+          </ul>
         </div>
+
+        <form class="form" id="contact-form" novalidate>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-name">שם מלא</label>
+              <input class="input" id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="name-error" placeholder="ישראלה ישראלי">
+              <p class="error" id="name-error"></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">טלפון</label>
+              <input class="input" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" required aria-describedby="phone-error" placeholder="050-1234567">
+              <p class="error" id="phone-error"></p>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-email">אימייל <span class="opt">רשות</span></label>
+              <input class="input" id="f-email" name="email" type="email" autocomplete="email" dir="ltr" aria-describedby="email-error" placeholder="name@company.co.il">
+              <p class="error" id="email-error"></p>
+            </div>
+            <div class="field">
+              <label for="f-topic">נושא</label>
+              <select class="input" id="f-topic" name="topic">
+                <option selected>שיחת היכרות</option>
+                <option>אסטרטגיית צמיחה</option>
+                <option>משפכים וקמפיינים</option>
+                <option>מדדים ו-KPI</option>
+                <option>משהו אחר</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-message">ההודעה</label>
+            <textarea class="input" id="f-message" name="message" rows="3" required aria-describedby="message-error" placeholder="ספרו בכמה מילים על העסק ועל מה שאתם צריכים"></textarea>
+            <p class="error" id="message-error"></p>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="f-website">אתר</label>
+            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form__submit">
+            <button class="btn btn--chroma" type="submit" id="f-submit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.6z"/><path d="M9.2 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c-.1.2-.1.4 0 .6.6 1.1 1.5 2 2.6 2.6.2.1.4.1.6 0l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.5-2.8-.1a9.6 9.6 0 0 1-4.4-4.4c-.6-1.2-.4-2.2-.1-2.8z" fill="currentColor" stroke="none"/></svg>
+              <span class="btn__label">שליחה בוואטסאפ</span>
+            </button>
+            <p class="form__note" id="form-note">הלחיצה פותחת את וואטסאפ עם ההודעה. נשאר רק ללחוץ על שליחה.</p>
+            <p class="status" id="form-status" role="status" hidden></p>
+          </div>
+        </form>
       </div>
     </section>
   </main>
@@ -453,6 +410,7 @@
         <li><a href="https://www.instagram.com/shalev.bar/" target="_blank" rel="noopener" aria-label="אינסטגרם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a></li>
       </ul>
       <a class="totop" href="#top">חזרה למעלה</a>
+      <p class="credit">נבנה על ידי <bdi class="credit__brand">Hag.AI</bdi><span aria-hidden="true">·</span><a href="https://wa.me/972586879347?text=%D7%94%D7%99%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%20%D7%91%D7%A8%20%D7%A9%D7%9C%D7%95-%D7%A0%D7%AA%D7%9F." target="_blank" rel="noopener">וואטסאפ</a></p>
     </div>
   </footer>
 

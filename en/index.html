@@ -331,110 +331,67 @@
 
     <!-- ============ CONTACT ============ -->
     <section class="section section--contact" id="contact" aria-labelledby="contact-title">
-      <div class="wrap section__in">
-        <header class="section__head">
+      <div class="wrap contact">
+        <div class="contact__intro">
           <h2 class="section__title" id="contact-title">Let’s talk</h2>
-          <p class="section__lead">Fill in a few details and hit send. WhatsApp opens with your message written and ready to go.</p>
-        </header>
-
-        <div class="contact">
-          <form class="form" id="contact-form" novalidate>
-            <div class="form__row">
-              <div class="field">
-                <label for="f-name">Full name</label>
-                <input class="input" id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="name-error" placeholder="Alex Morgan">
-                <p class="error" id="name-error"></p>
-              </div>
-              <div class="field">
-                <label for="f-phone">Phone</label>
-                <input class="input" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="phone-error" placeholder="+972 50-123-4567">
-                <p class="error" id="phone-error"></p>
-              </div>
-            </div>
-            <div class="form__row">
-              <div class="field">
-                <label for="f-email">Email <span class="opt">optional</span></label>
-                <input class="input" id="f-email" name="email" type="email" autocomplete="email" aria-describedby="email-error" placeholder="name@company.com">
-                <p class="error" id="email-error"></p>
-              </div>
-              <div class="field">
-                <label for="f-company">Company <span class="opt">optional</span></label>
-                <input class="input" id="f-company" name="company" type="text" autocomplete="organization" placeholder="Company name">
-              </div>
-            </div>
-
-            <fieldset class="field chips">
-              <legend>What can I help with?</legend>
-              <div class="chips__list">
-                <label class="chip"><input type="radio" name="topic" id="t-growth" value="Growth strategy" checked><span>Growth strategy</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-funnel" value="Funnels &amp; campaigns"><span>Funnels &amp; campaigns</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-data" value="KPIs &amp; measurement"><span>KPIs &amp; measurement</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-intro" value="Intro call"><span>Intro call</span></label>
-                <label class="chip"><input type="radio" name="topic" id="t-other" value="Something else"><span>Something else</span></label>
-              </div>
-            </fieldset>
-
-            <div class="field">
-              <label for="f-message">Message</label>
-              <textarea class="input" id="f-message" name="message" rows="4" required aria-describedby="message-error" placeholder="A few words about your business and what you need"></textarea>
-              <p class="error" id="message-error"></p>
-            </div>
-
-            <div class="hp" aria-hidden="true">
-              <label for="f-website">Website</label>
-              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
-            </div>
-
-            <div class="form__submit">
-              <button class="btn btn--chroma btn--wide" type="submit" id="f-submit">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.6z"/><path d="M9.2 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c-.1.2-.1.4 0 .6.6 1.1 1.5 2 2.6 2.6.2.1.4.1.6 0l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.5-2.8-.1a9.6 9.6 0 0 1-4.4-4.4c-.6-1.2-.4-2.2-.1-2.8z" fill="currentColor" stroke="none"/></svg>
-                <span class="btn__label">Send on WhatsApp</span>
-              </button>
-              <p class="form__note" id="form-note">This opens WhatsApp with your message. All that’s left is to hit send.</p>
-              <p class="status" id="form-status" role="status" hidden></p>
-            </div>
-          </form>
-
-          <aside class="aside" aria-label="Message preview and other ways to reach me">
-            <div class="chat">
-              <div class="chat__head">
-                <span class="avatar" aria-hidden="true"><img src="../assets/img/bar-avatar.jpg" width="42" height="42" alt=""></span>
-                <span class="chat__who"><strong>Bar Shalev-Nathan</strong><span>+972 50-333-7074</span></span>
-                <span class="chat__label">Preview</span>
-              </div>
-              <div class="chat__body">
-                <div class="bubble">
-                  <p class="bubble__text" id="preview" aria-live="off"></p>
-                  <span class="bubble__meta">now</span>
-                </div>
-              </div>
-            </div>
-
-            <ul class="channels" aria-label="Other ways to reach me">
-              <li class="channel">
-                <a class="js-wa" href="https://wa.me/972503337074" target="_blank" rel="noopener">
-                  <span class="channel__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.6z"/><path d="M9.2 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c-.1.2-.1.4 0 .6.6 1.1 1.5 2 2.6 2.6.2.1.4.1.6 0l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.5-2.8-.1a9.6 9.6 0 0 1-4.4-4.4c-.6-1.2-.4-2.2-.1-2.8z" fill="currentColor" stroke="none"/></svg></span>
-                  <span class="channel__text"><strong>WhatsApp</strong><span>+972 50-333-7074</span></span>
-                  <svg class="channel__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-                </a>
-              </li>
-              <li class="channel">
-                <a href="https://www.linkedin.com/in/bar-shalev-nathan" target="_blank" rel="noopener">
-                  <span class="channel__icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4z"/></svg></span>
-                  <span class="channel__text"><strong>LinkedIn</strong><span>in/bar-shalev-nathan</span></span>
-                  <svg class="channel__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-                </a>
-              </li>
-              <li class="channel">
-                <a href="https://www.instagram.com/shalev.bar/" target="_blank" rel="noopener">
-                  <span class="channel__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></span>
-                  <span class="channel__text"><strong>Instagram</strong><span>@shalev.bar</span></span>
-                  <svg class="channel__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
-                </a>
-              </li>
-            </ul>
-          </aside>
+          <p class="section__lead">A few details, one click, and WhatsApp opens with your message ready to send.</p>
+          <ul class="direct" aria-label="Reach me directly">
+            <li><a class="js-wa" href="https://wa.me/972503337074" target="_blank" rel="noopener"><span>WhatsApp</span><span class="direct__val" dir="ltr">+972 50-333-7074</span></a></li>
+            <li><a href="https://www.linkedin.com/in/bar-shalev-nathan" target="_blank" rel="noopener"><span>LinkedIn</span><span class="direct__val" dir="ltr">in/bar-shalev-nathan</span></a></li>
+            <li><a href="https://www.instagram.com/shalev.bar/" target="_blank" rel="noopener"><span>Instagram</span><span class="direct__val" dir="ltr">@shalev.bar</span></a></li>
+          </ul>
         </div>
+
+        <form class="form" id="contact-form" novalidate>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-name">Full name</label>
+              <input class="input" id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="name-error" placeholder="Alex Morgan">
+              <p class="error" id="name-error"></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone</label>
+              <input class="input" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="phone-error" placeholder="+972 50-123-4567">
+              <p class="error" id="phone-error"></p>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="f-email">Email <span class="opt">optional</span></label>
+              <input class="input" id="f-email" name="email" type="email" autocomplete="email" aria-describedby="email-error" placeholder="name@company.com">
+              <p class="error" id="email-error"></p>
+            </div>
+            <div class="field">
+              <label for="f-topic">Topic</label>
+              <select class="input" id="f-topic" name="topic">
+                <option selected>Intro call</option>
+                <option>Growth strategy</option>
+                <option>Funnels &amp; campaigns</option>
+                <option>KPIs &amp; measurement</option>
+                <option>Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-message">Message</label>
+            <textarea class="input" id="f-message" name="message" rows="3" required aria-describedby="message-error" placeholder="A few words about your business and what you need"></textarea>
+            <p class="error" id="message-error"></p>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="f-website">Website</label>
+            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form__submit">
+            <button class="btn btn--chroma" type="submit" id="f-submit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.6z"/><path d="M9.2 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c-.1.2-.1.4 0 .6.6 1.1 1.5 2 2.6 2.6.2.1.4.1.6 0l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.5-2.8-.1a9.6 9.6 0 0 1-4.4-4.4c-.6-1.2-.4-2.2-.1-2.8z" fill="currentColor" stroke="none"/></svg>
+              <span class="btn__label">Send on WhatsApp</span>
+            </button>
+            <p class="form__note" id="form-note">This opens WhatsApp with your message. All that’s left is to hit send.</p>
+            <p class="status" id="form-status" role="status" hidden></p>
+          </div>
+        </form>
       </div>
     </section>
   </main>
@@ -454,6 +411,7 @@
         <li><a href="https://www.instagram.com/shalev.bar/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a></li>
       </ul>
       <a class="totop" href="#top">Back to top</a>
+      <p class="credit">Built by <bdi class="credit__brand">Hag.AI</bdi><span aria-hidden="true">·</span><a href="https://wa.me/972586879347?text=Hi%2C%20I%20found%20you%20through%20Bar%20Shalev-Nathan%E2%80%99s%20website." target="_blank" rel="noopener">WhatsApp</a></p>
     </div>
   </footer>
 

@@ -14,7 +14,6 @@
       locale: 'he-IL',
       greeting: 'היי בר, הגעתי מהאתר שלך.',
       labels: { name: 'שם', company: 'חברה', phone: 'טלפון', email: 'אימייל', topic: 'נושא', message: 'הודעה' },
-      placeholders: { name: 'השם שלכם', phone: '050-0000000', message: 'כמה מילים על מה שאתם צריכים' },
       defaultTopic: 'שיחת היכרות',
       errors: {
         name: 'כתבו את השם שלכם, כדי שאדע למי לחזור.',
@@ -34,7 +33,6 @@
       locale: 'en-GB',
       greeting: 'Hi Bar, I found you through your website.',
       labels: { name: 'Name', company: 'Company', phone: 'Phone', email: 'Email', topic: 'Topic', message: 'Message' },
-      placeholders: { name: 'Your name', phone: '+972 50-000-0000', message: 'A few words about what you need' },
       defaultTopic: 'Intro call',
       errors: {
         name: 'Add your name so I know who to get back to.',
@@ -103,7 +101,6 @@
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  const preview = document.getElementById('preview');
   const status = document.getElementById('form-status');
   const note = document.getElementById('form-note');
   const submit = document.getElementById('f-submit');
@@ -118,7 +115,7 @@
     message: val('message')
   });
 
-  // One description of the message, used for both the preview and the text sent.
+  // The WhatsApp message, line by line. Empty optional fields are left out.
   const lines = d => [
     { text: t.greeting },
     { blank: true },
@@ -137,27 +134,6 @@
     const label = t.labels[l.key];
     return l.block ? `*${label}:*\n${l.value}` : `*${label}:* ${l.value}`;
   }).join('\n');
-
-  const renderPreview = () => {
-    const frag = document.createDocumentFragment();
-    lines(getData()).forEach((l, i) => {
-      if (i) frag.append('\n');
-      if (l.blank) return;
-      if (l.text) { frag.append(l.text); return; }
-      const b = document.createElement('b');
-      b.textContent = `${t.labels[l.key]}:`;
-      frag.append(b, l.block ? '\n' : ' ');
-      if (l.value) {
-        frag.append(l.value);
-      } else {
-        const ph = document.createElement('span');
-        ph.className = 'ph';
-        ph.textContent = t.placeholders[l.key];
-        frag.append(ph);
-      }
-    });
-    preview.replaceChildren(frag);
-  };
 
   const rules = {
     name: v => v ? '' : t.errors.name,
@@ -183,10 +159,6 @@
     input.addEventListener('blur', () => { if (input.value.trim() || input.getAttribute('aria-invalid')) check(name); });
     input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') === 'true') check(name); });
   });
-
-  form.addEventListener('input', renderPreview);
-  form.addEventListener('change', renderPreview);
-  renderPreview();
 
   const showStatus = (text, linkUrl) => {
     status.replaceChildren(text);
@@ -242,7 +214,6 @@
       if (ok) {
         showStatus(t.relayOk);
         form.reset();
-        renderPreview();
         return;
       }
       showStatus(t.relayFail, url);
