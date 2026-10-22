@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>בר שלו-נתן · סרטון תדמית</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Hebrew:wght@400;500;600;700&family=Karantina:wght@700&display=swap">
+<style>
+/* 1920×1080 composition, rendered frame by frame by render.mjs.
+   Same tokens as the site: paper, ink, chroma-key blue, on-air red, color bars. */
+:root {
+  --paper: #F5F7FA; --surface: #FFFFFF; --ink: #0B1324; --ink-soft: #465066; --ink-faint: #737D91;
+  --line: #DDE2EA; --chroma: #0047BB; --live: #E5322D; --screen: #0A1122;
+  --bar-grey: #C9CFD9; --bar-yellow: #F3C21B; --bar-cyan: #12B5CB; --bar-green: #24B26B;
+  --bar-magenta: #C93DB6; --bar-red: #E5322D; --bar-blue: #0047BB;
+  --f-display: "Karantina", sans-serif;
+  --f-body: "IBM Plex Sans Hebrew", sans-serif;
+  --f-mono: "IBM Plex Mono", "IBM Plex Sans Hebrew", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--f-body); }
+.scene { position: absolute; inset: 0; visibility: hidden; overflow: hidden; }
+.mono { font-family: var(--f-mono); }
+.strip { position: absolute; left: 0; right: 0; bottom: 0; height: 14px; display: flex; direction: ltr; }
+.strip i { flex: 1; }
+
+/* ---------- 1 · Test pattern ---------- */
+#s1 { background: #000; }
+.smpte { position: absolute; inset: 0; display: grid; grid-template-rows: 67fr 8fr 25fr; direction: ltr; }
+.smpte > div { display: flex; }
+.smpte i { flex: 1; }
+.smpte .low i:nth-child(1) { flex: 1.25; } .smpte .low i:nth-child(2) { flex: 1.25; } .smpte .low i:nth-child(3) { flex: 1.25; }
+.tcbox {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  background: rgb(10 17 34 / .92); color: #fff; border-radius: 10px; padding: 34px 56px 30px;
+  display: grid; justify-items: center; gap: 14px; direction: ltr;
+  box-shadow: 0 30px 60px rgb(0 0 0 / .35);
+}
+.tcbox .lbl { font: 500 26px/1 var(--f-mono); letter-spacing: .2em; color: rgb(255 255 255 / .7); display: flex; align-items: center; gap: 14px; }
+.tcbox .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--live); }
+.tcbox .tc { font: 600 96px/1 var(--f-mono); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+
+/* ---------- 2 · Live ---------- */
+#s2 { background: var(--screen); }
+.photo { position: absolute; inset: 0; background: url("assets/bar-16x9.jpg") center / cover; transform-origin: 44% 32%; }
+.dropbars { position: absolute; inset: 0; display: flex; direction: ltr; }
+.dropbars i { flex: 1; transform-origin: bottom; }
+.safe { position: absolute; inset: 54px 96px; border: 2px dashed rgb(255 255 255 / .18); }
+.hud { position: absolute; top: 56px; left: 96px; right: 96px; display: flex; justify-content: space-between; direction: rtl; }
+.tag { display: inline-flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 6px; background: rgb(10 17 34 / .72); color: rgb(255 255 255 / .9); font: 500 30px/1 var(--f-mono); letter-spacing: .08em; font-variant-numeric: tabular-nums; direction: ltr; }
+.tag .sq { width: 18px; height: 18px; border-radius: 3px; background: var(--live); }
+.lt { position: absolute; right: 96px; bottom: 120px; display: grid; justify-items: stretch; filter: drop-shadow(0 18px 30px rgb(0 0 0 / .35)); }
+.lt .t { justify-self: start; background: var(--live); color: #fff; font: 700 30px/1 var(--f-body); padding: 12px 20px; }
+.lt .n { background: var(--surface); color: var(--ink); font: 700 132px/1 var(--f-display); padding: 22px 40px 6px; }
+.lt .r { background: var(--chroma); color: #fff; font: 500 38px/1 var(--f-body); padding: 18px 40px; }
+.mic { position: absolute; left: 96px; bottom: 120px; width: 300px; padding: 18px 20px; border-radius: 10px; background: rgb(10 17 34 / .72); display: grid; gap: 12px; }
+.mic .hd { display: flex; justify-content: space-between; font: 500 20px/1 var(--f-mono); letter-spacing: .14em; color: rgb(255 255 255 / .7); direction: ltr; }
+.mic .hd b { color: var(--live); font-weight: 600; }
+.meter { height: 70px; display: flex; gap: 4px; direction: ltr; }
+.meter span { position: relative; flex: 1; background: repeating-linear-gradient(to top, rgb(255 255 255 / .08) 0 5px, transparent 5px 7px); }
+.meter span i { position: absolute; inset: 0; background: linear-gradient(to top, var(--bar-green) 0 60%, var(--bar-yellow) 60% 84%, var(--live) 84%); -webkit-mask: repeating-linear-gradient(to top, #000 0 5px, transparent 5px 7px); }
+
+/* ---------- wipes ---------- */
+.wipe { position: absolute; inset: 0; background: var(--chroma); visibility: hidden; z-index: 20; }
+.cbwipe { position: absolute; inset: 0; display: flex; direction: ltr; z-index: 20; visibility: hidden; }
+.cbwipe i { flex: 1; }
+
+/* ---------- 3 · Thesis ---------- */
+#s3 .copy { position: absolute; right: 160px; top: 230px; display: grid; gap: 34px; justify-items: start; }
+.kicker { display: flex; align-items: center; gap: 16px; font: 500 32px/1 var(--f-mono); color: var(--ink-soft); }
+.kicker .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--live); }
+.h1 { font: 700 250px/.88 var(--f-display); }
+.h1 .ln { display: block; overflow: hidden; padding-bottom: 8px; }
+.h1 .ln > span { display: inline-block; }
+.h1 .accent { color: var(--chroma); }
+.chart { position: absolute; left: 160px; bottom: 150px; width: 560px; height: 600px; display: flex; align-items: flex-end; gap: 14px; direction: ltr; }
+.chart i { flex: 1; border-radius: 6px 6px 0 0; transform-origin: bottom; }
+.chart::after { content: ""; position: absolute; left: -20px; right: -20px; bottom: 0; height: 3px; background: var(--ink); }
+
+/* ---------- 4 · Services ---------- */
+#s4 .head { position: absolute; right: 160px; top: 110px; font: 700 140px/1 var(--f-display); }
+.rows { position: absolute; right: 160px; left: 160px; top: 300px; display: grid; gap: 0; }
+.row { display: flex; align-items: center; gap: 40px; height: 160px; border-top: 3px solid var(--ink); }
+.row .glyph { display: flex; align-items: flex-end; gap: 6px; height: 64px; flex: none; }
+.row .glyph i { width: 13px; border-radius: 2px; transform-origin: bottom; }
+.row h3 { font: 600 64px/1.1 var(--f-body); }
+.row p { margin-right: auto; font: 400 36px/1.3 var(--f-body); color: var(--ink-soft); }
+
+/* ---------- 5 · Track record ---------- */
+#s5 { background: var(--surface); }
+#s5 .head { position: absolute; right: 160px; top: 90px; font: 700 140px/1 var(--f-display); }
+#s5 .sub { position: absolute; left: 160px; top: 150px; font: 400 38px/1.3 var(--f-body); color: var(--ink-soft); }
+.gantt { position: absolute; right: 160px; left: 160px; top: 280px; --from: 2012; --span: 16; }
+.g { display: grid; grid-template-columns: 560px 1fr; gap: 48px; align-items: center; height: 96px; border-top: 2px solid var(--line); }
+.g .lab { display: grid; gap: 2px; }
+.g .lab b { font: 600 38px/1.15 var(--f-body); }
+.g .lab span { font: 400 27px/1.2 var(--f-body); color: var(--ink-soft); }
+.g .trk { position: relative; height: 36px; background-image: repeating-linear-gradient(to left, var(--line) 0 2px, transparent 2px calc(100% / 16)); }
+.g .bar { position: absolute; top: 0; bottom: 0; border-radius: 4px; transform-origin: right; }
+.g .bar.plan { background: repeating-linear-gradient(-45deg, var(--c) 0 5px, transparent 5px 11px) !important; box-shadow: inset 0 0 0 2px var(--c); }
+.axis { display: grid; grid-template-columns: 560px 1fr; gap: 48px; border-top: 2px solid var(--line); padding-top: 16px; }
+.axis .sc { grid-column: 2; position: relative; height: 30px; font: 500 27px/1 var(--f-mono); color: var(--ink-faint); }
+.axis .sc span { position: absolute; top: 0; transform: translateX(50%); }
+.axis .sc .now { color: var(--live); font-weight: 600; }
+.nowline { position: absolute; top: 0; bottom: 46px; border-right: 2px dashed var(--live); opacity: .6; }
+
+/* ---------- 6 · End card ---------- */
+#s6 .card { position: absolute; right: 160px; top: 0; bottom: 0; display: grid; align-content: center; justify-items: start; gap: 30px; }
+.brandmark { display: flex; align-items: flex-end; gap: 6px; height: 70px; }
+.brandmark i { width: 13px; border-radius: 2px; transform-origin: bottom; }
+.name { font: 700 220px/.9 var(--f-display); }
+.role { font: 500 52px/1.2 var(--f-body); color: var(--ink-soft); }
+.contacts { display: grid; gap: 0; margin-top: 16px; border-top: 2px solid var(--line); width: 900px; }
+.contacts div { display: flex; justify-content: space-between; align-items: baseline; padding: 20px 0; border-bottom: 2px solid var(--line); }
+.contacts b { font: 600 36px/1 var(--f-body); }
+.contacts span { font: 500 34px/1 var(--f-mono); color: var(--ink-soft); direction: ltr; }
+.monitor { position: absolute; left: 160px; top: 50%; width: 600px; margin-top: -169px; background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 12px; box-shadow: 0 60px 100px -50px rgb(11 19 36 / .5); }
+.monitor .scr { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: url("assets/bar-16x9.jpg") 44% 32% / cover; }
+.monitor .scr .strip { height: 10px; }
+.monitor .live { position: absolute; top: 18px; right: 18px; display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 6px; background: rgb(10 17 34 / .72); color: #fff; font: 600 20px/1 var(--f-mono); letter-spacing: .12em; }
+.monitor .live b { width: 12px; height: 12px; border-radius: 50%; background: var(--live); }
+</style>
+</head>
+<body>
+
+<!-- 1 · Test pattern -->
+<section class="scene" id="s1">
+  <div class="smpte">
+    <div><i style="background:#C0C0C0"></i><i style="background:#C0C000"></i><i style="background:#00C0C0"></i><i style="background:#00C000"></i><i style="background:#C000C0"></i><i style="background:#C00000"></i><i style="background:#0000C0"></i></div>
+    <div><i style="background:#0000C0"></i><i style="background:#131313"></i><i style="background:#C000C0"></i><i style="background:#131313"></i><i style="background:#00C0C0"></i><i style="background:#131313"></i><i style="background:#C0C0C0"></i></div>
+    <div class="low"><i style="background:#00214C"></i><i style="background:#FFFFFF"></i><i style="background:#32006A"></i><i style="background:#131313"></i><i style="background:#090909"></i><i style="background:#131313"></i><i style="background:#1D1D1D"></i><i style="background:#131313"></i></div>
+  </div>
+  <div class="tcbox">
+    <div class="lbl"><span class="dot" id="s1dot"></span>PGM · 1080i/50</div>
+    <div class="tc" id="tc1">19:59:57:00</div>
+  </div>
+</section>
+
+<!-- 2 · Live -->
+<section class="scene" id="s2">
+  <div class="photo" id="photo"></div>
+  <div class="dropbars" id="dropbars"></div>
+  <div class="safe"></div>
+  <div class="hud">
+    <span class="tag"><span class="sq"></span>PGM</span>
+    <span class="tag" id="tc2">20:00:00:00</span>
+  </div>
+  <div class="mic" id="mic">
+    <div class="hd"><span>MIC 1</span><b>ON AIR</b></div>
+    <div class="meter" id="meter"></div>
+  </div>
+  <div class="lt" id="lt">
+    <span class="t">שידור חי</span>
+    <span class="n">בר שלו-נתן</span>
+    <span class="r">יועצת צמיחה ושיווק · B.S.N Marketing</span>
+  </div>
+</section>
+
+<!-- 3 · Thesis -->
+<section class="scene" id="s3">
+  <div class="copy">
+    <p class="kicker" id="kicker"><span class="dot"></span>ייעוץ צמיחה · Go-to-Market · שיווק דיגיטלי</p>
+    <h1 class="h1"><span class="ln"><span id="l1">מסר חד.</span></span><span class="ln"><span class="accent" id="l2">נתונים ברורים.</span></span></h1>
+  </div>
+  <div class="chart" id="chart"></div>
+  <div class="strip" data-strip></div>
+</section>
+
+<!-- 4 · Services -->
+<section class="scene" id="s4">
+  <h2 class="head" id="s4head">מה אני עושה</h2>
+  <div class="rows" id="rows"></div>
+  <div class="strip" data-strip></div>
+</section>
+
+<!-- 5 · Track record -->
+<section class="scene" id="s5">
+  <h2 class="head" id="s5head">המסלול</h2>
+  <p class="sub" id="s5sub">בשיווק דיגיטלי מאז 2018</p>
+  <div class="gantt" id="gantt"></div>
+  <div class="strip" data-strip></div>
+</section>
+
+<!-- 6 · End card -->
+<section class="scene" id="s6">
+  <div class="monitor" id="mon">
+    <div class="scr"><span class="live"><b></b>LIVE</span><div class="strip" data-strip></div></div>
+  </div>
+  <div class="card">
+    <div class="brandmark" id="bm"></div>
+    <div class="name" id="nm">בר שלו-נתן</div>
+    <div class="role" id="rl">יועצת צמיחה ושיווק · B.S.N Marketing</div>
+    <div class="contacts" id="ct">
+      <div><b>אתר</b><span>hagynwa.github.io/bar-site</span></div>
+      <div><b>וואטסאפ</b><span>050-333-7074</span></div>
+      <div><b>אינסטגרם</b><span>@shalev.bar</span></div>
+    </div>
+  </div>
+  <div class="strip" data-strip></div>
+</section>
+
+<div class="wipe" id="wipe"></div>
+<div class="cbwipe" id="cbwipe"></div>
+
+<script>
+const BARS = ['--bar-grey', '--bar-yellow', '--bar-cyan', '--bar-green', '--bar-magenta', '--bar-red', '--bar-blue'].map(v => `var(${v})`);
+const FPS = 25;
+const DURATION = 25;
+// Bar's narration sits in the "going live" scene. render.mjs fills these in.
+window.NARRATION = window.NARRATION || { start: 3.4, levels: null };
+
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const prog = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eExpo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const pad = n => String(n).padStart(2, '0');
+const make = (parent, tag, n, fn) => Array.from({ length: n }, (_, i) => { const el = document.createElement(tag); fn && fn(el, i); parent.appendChild(el); return el; });
+
+// ---- build ----
+document.querySelectorAll('[data-strip]').forEach(s => make(s, 'i', 7, (el, i) => el.style.background = BARS[i]));
+const drop = make($('dropbars'), 'i', 7, (el, i) => el.style.background = BARS[i]);
+const meterBars = make($('meter'), 'span', 18, el => el.appendChild(document.createElement('i'))).map(s => s.firstChild);
+const CH = [.30, .38, .46, .55, .64, .74, .86];
+const chart = make($('chart'), 'i', 7, (el, i) => { el.style.background = BARS[i]; el.style.height = CH[i] * 100 + '%'; });
+
+const SERVICES = [
+  { c: BARS[6], v: [.3, .45, .6, .78, 1], h: 'אסטרטגיית צמיחה וכניסה לשוק', p: 'תוכנית שמתחילה ביעדי ההכנסות' },
+  { c: BARS[4], v: [1, .78, .6, .45, .34], h: 'משפכים וקמפיינים', p: 'מהקליק הראשון ועד הרכישה' },
+  { c: BARS[2], v: [.55, .85, .4, 1, .7], h: 'מדדים והחלטות', p: 'KPI ברורים, החלטות לפי נתונים' },
+  { c: BARS[1], v: [.4, .4, .7, .7, 1], h: 'מבנה וביצוע', p: 'פרויקטים חוצי ארגון, מקצה לקצה' },
+];
+const rows = SERVICES.map(s => {
+  const row = document.createElement('div'); row.className = 'row';
+  const g = document.createElement('span'); g.className = 'glyph';
+  s.v.forEach(v => { const i = document.createElement('i'); i.style.background = s.c; i.style.height = v * 100 + '%'; g.appendChild(i); });
+  const h = document.createElement('h3'); h.textContent = s.h;
+  const p = document.createElement('p'); p.textContent = s.p;
+  row.append(g, h, p); $('rows').appendChild(row);
+  return row;
+});
+
+const TRACK = [
+  { o: 'B.S.N Marketing', r: 'מייסדת, יועצת צמיחה ושיווק', c: BARS[6], b: [[2025.42, 2026.8]] },
+  { o: 'MBA, אוניברסיטת תל אביב', r: 'בית הספר לניהול קולר', c: BARS[1], b: [[2025.75, 2026.8], [2026.8, 2027.5, 'plan']] },
+  { o: 'Global-e', r: 'Growth Marketing Specialist', c: BARS[4], b: [[2022.1, 2025.42]] },
+  { o: 'פעמונים', r: 'מתנדבת, ליווי כלכלי למשפחות', c: BARS[3], b: [[2019.5, 2025.95]] },
+  { o: 'UM Digital', r: 'מנהלת מדיה, ובהמשך ראש צוות', c: BARS[2], b: [[2018.42, 2021.5], [2021.5, 2022.1, 'step']] },
+  { o: 'האוניברסיטה העברית', r: 'תואר ראשון בכלכלה', c: BARS[1], b: [[2013.75, 2017.5]] },
+  { o: 'הסוכנות היהודית', r: 'ראש צוות', c: BARS[5], b: [[2012.85, 2015]] },
+];
+const X = y => (y - 2012) / 16 * 100;
+const ganttBars = [];
+TRACK.forEach((t, i) => {
+  const g = document.createElement('div'); g.className = 'g';
+  g.innerHTML = `<div class="lab"><b></b><span></span></div><div class="trk"></div>`;
+  g.querySelector('b').textContent = t.o; g.querySelector('.lab span').textContent = t.r;
+  t.b.forEach(([s, e, kind]) => {
+    const bar = document.createElement('i'); bar.className = 'bar' + (kind === 'plan' ? ' plan' : '');
+    bar.style.cssText = `right:${X(s)}%;width:${X(e) - X(s)}%;--c:${t.c};background:${kind === 'step' ? 'color-mix(in srgb,' + t.c + ' 65%, #0B1324)' : t.c}`;
+    if (kind === 'step') bar.style.borderRight = '3px solid #fff';
+    g.querySelector('.trk').appendChild(bar); ganttBars.push({ el: bar, row: i });
+  });
+  $('gantt').appendChild(g);
+});
+const axis = document.createElement('div'); axis.className = 'axis';
+axis.innerHTML = '<div class="sc">' + [2012, 2014, 2016, 2018, 2020, 2022, 2024].map(y => `<span style="right:${X(y)}%">${y}</span>`).join('') + `<span class="now" style="right:${X(2026.8)}%">היום</span></div>`;
+axis.querySelector('span').style.transform = 'none';
+$('gantt').appendChild(axis);
+const nowline = document.createElement('div'); nowline.className = 'nowline';
+nowline.style.right = `calc(608px + (100% - 608px) * ${X(2026.8) / 100})`;
+$('gantt').appendChild(nowline);
+
+const bm = make($('bm'), 'i', 4, (el, i) => { el.style.background = [BARS[1], BARS[2], BARS[4], BARS[6]][i]; el.style.height = [45, 65, 82, 100][i] + '%'; });
+const cbw = make($('cbwipe'), 'i', 7, (el, i) => el.style.background = BARS[i]);
+
+// ---- timeline (seconds) ----
+const S = { s1: [0, 3], s2: [3, 8.05], s3: [8.05, 12.45], s4: [12.45, 17.95], s5: [17.95, 21.5], s6: [21.5, DURATION + 1] };
+const WIPES = [7.75, 12.15, 17.65];
+
+function timecode(t) {
+  const f = 20 * 3600 * FPS - 3 * FPS + Math.round(t * FPS);
+  const s = Math.floor(f / FPS);
+  return `${pad(Math.floor(s / 3600) % 24)}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}:${pad(f % FPS)}`;
+}
+function level(t) {
+  const n = window.NARRATION;
+  if (n.levels) {
+    const k = Math.round((t - n.start) * FPS);
+    return k >= 0 && k < n.levels.length ? n.levels[k] : 0.04;
+  }
+  // idle: a gentle room-tone flicker until the real narration is mixed in
+  return 0.18 + 0.12 * Math.abs(Math.sin(t * 7.3) * Math.sin(t * 3.1 + 1));
+}
+const vis = (el, on) => { el.style.visibility = on ? 'visible' : 'hidden'; };
+
+window.render = function render(t) {
+  for (const [id, [a, b]] of Object.entries(S)) vis($(id), t >= a && t < b);
+
+  // 1 · test pattern
+  $('tc1').textContent = timecode(t);
+  $('s1dot').style.opacity = (Math.floor(t * 2) % 2) ? .25 : 1;
+
+  // 2 · live
+  $('tc2').textContent = timecode(t);
+  $('photo').style.transform = `scale(${1 + .07 * eInOut(prog(t, 3, 5))})`;
+  drop.forEach((el, i) => { el.style.transform = `scaleY(${1 - .985 * eInOut(prog(t, 3 + i * .065, .55))})`; });
+  const ltIn = eExpo(prog(t, 3.75, .55)), ltOut = eInOut(prog(t, 7.45, .3));
+  $('lt').style.clipPath = `inset(0 0 0 ${100 - ltIn * 100}%)`;
+  $('lt').style.opacity = 1 - ltOut;
+  const micA = eOut(prog(t, 3.3, .35)) * (1 - prog(t, 7.6, .3));
+  $('mic').style.opacity = micA;
+  const L = level(t);
+  meterBars.forEach((el, i) => {
+    const shape = .55 + .45 * Math.sin(i * 1.7 + t * 9) * Math.sin(i * .6 + t * 4.3);
+    const v = clamp(L * (0.75 + 0.5 * shape));
+    el.style.clipPath = `inset(${(1 - v) * 100}% 0 0 0)`;
+  });
+
+  // wipes (cover, then reveal, sweeping right → left)
+  const w = WIPES.find(w0 => t >= w0 && t < w0 + .6);
+  if (w !== undefined) {
+    const x = (t - w) / .6;
+    const a = x < .5 ? eInOut(x * 2) : 1, b = x < .5 ? 0 : eInOut((x - .5) * 2);
+    $('wipe').style.visibility = 'visible';
+    $('wipe').style.clipPath = `inset(0 ${b * 100}% 0 ${100 - a * 100}%)`;
+  } else vis($('wipe'), false);
+
+  // 3 · thesis
+  const k = eOut(prog(t, 8.3, .5));
+  $('kicker').style.cssText = `opacity:${k};transform:translateY(${(1 - k) * 20}px)`;
+  $('l1').style.transform = `translateY(${(1 - eExpo(prog(t, 8.45, .7))) * 110}%)`;
+  $('l2').style.transform = `translateY(${(1 - eExpo(prog(t, 8.9, .7))) * 110}%)`;
+  chart.forEach((el, i) => { el.style.transform = `scaleY(${eExpo(prog(t, 9.4 + i * .1, .7))})`; });
+  $('s3').querySelector('.copy').style.transform = `scale(${1 + .015 * prog(t, 8.05, 4.4)})`;
+
+  // 4 · services
+  const hh = eOut(prog(t, 12.6, .5));
+  $('s4head').style.cssText = `opacity:${hh};transform:translateY(${(1 - hh) * 30}px)`;
+  const starts = [12.95, 14.05, 15.15, 16.25];
+  rows.forEach((row, i) => {
+    const a = eExpo(prog(t, starts[i], .6));
+    const dim = i < 3 ? (1 - .55 * eOut(prog(t, starts[i + 1], .3))) * 1 : 1;
+    const back = eOut(prog(t, 17.3, .3));
+    row.style.opacity = a * (dim + (1 - dim) * back);
+    row.style.transform = `translateX(${(1 - a) * -80}px)`;
+    row.querySelectorAll('.glyph i').forEach((g, j) => { g.style.transform = `scaleY(${eExpo(prog(t, starts[i] + .15 + j * .05, .45))})`; });
+  });
+
+  // 5 · track record
+  const h5 = eOut(prog(t, 18.1, .5));
+  $('s5head').style.cssText = `opacity:${h5};transform:translateY(${(1 - h5) * 30}px)`;
+  $('s5sub').style.opacity = eOut(prog(t, 18.3, .5));
+  ganttBars.forEach(({ el, row }) => { el.style.transform = `scaleX(${eExpo(prog(t, 18.35 + row * .16, .6))})`; });
+  nowline.style.opacity = .6 * eOut(prog(t, 19.6, .4));
+
+  // color-bar wipe into the end card
+  const cbOn = t >= 21.1 && t < 21.95;
+  vis($('cbwipe'), cbOn);
+  if (cbOn) cbw.forEach((el, i) => {
+    const up = eInOut(prog(t, 21.1 + i * .035, .28));
+    const out = eInOut(prog(t, 21.52 + i * .035, .3));
+    el.style.transformOrigin = out > 0 ? 'top' : 'bottom';
+    el.style.transform = `scaleY(${out > 0 ? 1 - out : up})`;
+  });
+
+  // 6 · end card
+  const m = eExpo(prog(t, 21.65, .8));
+  $('mon').style.cssText = `opacity:${m};transform:translateY(${(1 - m) * 40}px) scale(${.96 + .04 * m})`;
+  bm.forEach((el, i) => { el.style.transform = `scaleY(${eExpo(prog(t, 21.7 + i * .06, .5))})`; });
+  [['nm', 21.8], ['rl', 22.05], ['ct', 22.3]].forEach(([id, s]) => {
+    const a = eOut(prog(t, s, .5));
+    $(id).style.opacity = a; $(id).style.transform = `translateY(${(1 - a) * 24}px)`;
+  });
+};
+
+window.PROMO = { FPS, DURATION };
+window.render(0);
+</script>
+</body>
+</html>
