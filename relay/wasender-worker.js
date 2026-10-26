@@ -35,7 +35,7 @@ const buildText = (d, lang) => {
     '',
     `*${l.name}:* ${d.name}`,
     d.company ? `*${l.company}:* ${d.company}` : null,
-    `*${l.phone}:* ${d.phone}`,
+    d.phone ? `*${l.phone}:* ${d.phone}` : null,
     d.email ? `*${l.email}:* ${d.email}` : null,
     `*${l.topic}:* ${d.topic || defaultTopic}`,
     '',
@@ -79,7 +79,7 @@ export default {
       topic: clip(body.topic, 60),
       message: clip(body.message, 2000)
     };
-    if (!d.name || !d.phone || !d.message) return reply({ ok: false, error: 'missing_fields' }, 400);
+    if (!d.name || !d.message) return reply({ ok: false, error: 'missing_fields' }, 400);
 
     const res = await fetch(WASENDER_URL, {
       method: 'POST',

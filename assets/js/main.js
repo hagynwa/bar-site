@@ -11,13 +11,13 @@
 
   const STRINGS = {
     he: {
-      locale: 'he-IL',
+      pause: 'עצירת המבזקים',
+      play: 'הפעלת המבזקים',
       greeting: 'היי בר, הגעתי מהאתר שלך.',
       labels: { name: 'שם', company: 'חברה', phone: 'טלפון', email: 'אימייל', topic: 'נושא', message: 'הודעה' },
       defaultTopic: 'שיחת היכרות',
       errors: {
         name: 'כתבו את השם שלכם, כדי שאדע למי לחזור.',
-        phoneEmpty: 'השאירו מספר טלפון לחזרה.',
         phoneInvalid: 'המספר לא נראה תקין. נסו בפורמט 050-1234567.',
         email: 'כתובת האימייל לא נראית תקינה. בדקו שיש בה @ ונקודה.',
         message: 'כתבו כמה מילים על מה שאתם צריכים.'
@@ -30,13 +30,13 @@
       relayFail: 'השליחה האוטומטית לא עברה. אפשר לשלוח את אותה הודעה ישירות מוואטסאפ:'
     },
     en: {
-      locale: 'en-GB',
+      pause: 'Pause headlines',
+      play: 'Play headlines',
       greeting: 'Hi Bar, I found you through your website.',
       labels: { name: 'Name', company: 'Company', phone: 'Phone', email: 'Email', topic: 'Topic', message: 'Message' },
       defaultTopic: 'Intro call',
       errors: {
         name: 'Add your name so I know who to get back to.',
-        phoneEmpty: 'Add a phone number so I can reach you.',
         phoneInvalid: 'That number doesn’t look right. Try a format like +972 50-123-4567.',
         email: 'That email doesn’t look right. Check it has an @ and a dot.',
         message: 'Add a few words about what you need.'
@@ -78,21 +78,52 @@
       const s = Math.floor(frames / 25);
       tc.textContent = `${pad(Math.floor(s / 3600) % 24)}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}:${pad(reduceMotion ? 0 : frames % 25)}`;
     };
+    // runs through the opening sequence, then holds so nothing ticks while people read
     if (reduceMotion) {
-      setInterval(() => render(performance.now()), 1000);
+      render(t0);
     } else {
-      const loop = now => { render(now); requestAnimationFrame(loop); };
+      const loop = now => { render(now); if (now - t0 < 4200) requestAnimationFrame(loop); };
       requestAnimationFrame(loop);
     }
   }
 
-  /* ---------- Israel clock in the ticker ---------- */
-  const clock = document.getElementById('clock');
-  if (clock) {
-    const fmt = new Intl.DateTimeFormat(t.locale, { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jerusalem' });
-    const tick = () => { clock.textContent = fmt.format(new Date()); };
-    tick();
-    setInterval(tick, 15000);
+  /* ---------- Ticker: pause and play ---------- */
+  const ticker = document.querySelector('.ticker');
+  const toggle = ticker && ticker.querySelector('.ticker__toggle');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      const paused = ticker.classList.toggle('is-paused');
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.setAttribute('aria-label', paused ? t.play : t.pause);
+    });
+  }
+
+  /* ---------- Studio meter: a few seconds of level when it comes into view ---------- */
+  const studio = document.querySelector('.studio');
+  if (studio && !reduceMotion && 'IntersectionObserver' in window) {
+    let timer = 0;
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !timer) {
+        studio.classList.add('is-live');
+        timer = setTimeout(() => studio.classList.remove('is-live'), 4000);
+      } else if (!entry.isIntersecting && timer) {
+        clearTimeout(timer); timer = 0;
+        studio.classList.remove('is-live');
+      }
+    }, { threshold: 0.5 }).observe(studio);
+  }
+
+  /* ---------- Timeline: "today" follows the calendar ---------- */
+  const gantt = document.querySelector('.gantt');
+  if (gantt) {
+    const d = new Date();
+    const start = new Date(d.getFullYear(), 0, 1), end = new Date(d.getFullYear() + 1, 0, 1);
+    const now = (d.getFullYear() + (d - start) / (end - start)).toFixed(2);
+    gantt.style.setProperty('--today', now);
+    gantt.querySelectorAll('[data-until-now]').forEach(el => el.style.setProperty('--e', now));
+    gantt.querySelectorAll('[data-from-now]').forEach(el => el.style.setProperty('--s', now));
+    const label = gantt.querySelector('.g-axis__today');
+    if (label) label.style.setProperty('--y', now);
   }
 
   document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
@@ -121,7 +152,7 @@
     { blank: true },
     { key: 'name', value: d.name },
     { key: 'company', value: d.company, optional: true },
-    { key: 'phone', value: d.phone },
+    { key: 'phone', value: d.phone, optional: true },
     { key: 'email', value: d.email, optional: true },
     { key: 'topic', value: d.topic },
     { blank: true },
@@ -137,10 +168,8 @@
 
   const rules = {
     name: v => v ? '' : t.errors.name,
-    phone: v => {
-      if (!v) return t.errors.phoneEmpty;
-      return /^\+?\d{9,15}$/.test(v.replace(/[\s\-().]/g, '')) ? '' : t.errors.phoneInvalid;
-    },
+    // Israeli numbers start with 0 (or 972); anything else needs its +country code
+    phone: v => !v || /^(0[2-9]\d{7,8}|\+?972[2-9]\d{7,8}|\+[1-9]\d{7,14})$/.test(v.replace(/[\s\-().]/g, '')) ? '' : t.errors.phoneInvalid,
     email: v => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : t.errors.email,
     message: v => v ? '' : t.errors.message
   };
@@ -156,7 +185,8 @@
 
   Object.keys(rules).forEach(name => {
     const input = form.elements[name];
-    input.addEventListener('blur', () => { if (input.value.trim() || input.getAttribute('aria-invalid')) check(name); });
+    // Checking on blur waits for the first submit, so an error line never shifts the button mid-click
+    input.addEventListener('blur', () => { if (form.dataset.tried) check(name); });
     input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') === 'true') check(name); });
   });
 
@@ -197,6 +227,7 @@
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (val('website')) return; // bots fill the hidden field
+    form.dataset.tried = '1';
 
     const invalid = Object.keys(rules).filter(name => !check(name));
     if (invalid.length) {
