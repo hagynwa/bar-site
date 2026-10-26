@@ -10,7 +10,7 @@ en/index.html           העמוד באנגלית (משמאל לימין)
 assets/css/style.css    עיצוב משותף. הטוקנים (צבעים, פונטים) בראש הקובץ
 assets/js/main.js       טופס יצירת קשר, תצוגה מקדימה של ההודעה, טיקר ושעון.
                         כל הטקסטים של הטופס בשתי השפות נמצאים ב-STRINGS
-assets/img/             התמונה של בר (bar-640/1280 ב-JPG וב-WebP),
+assets/img/             התמונה של בר (bar-wide לדסקטופ ו-bar-portrait לטלפון, ב-JPG וב-WebP),
                         favicon ותמונות שיתוף (og.png בעברית, og-en.png באנגלית)
 relay/                  ממסר אופציונלי לשליחה אוטומטית דרך WaSender
 ```
