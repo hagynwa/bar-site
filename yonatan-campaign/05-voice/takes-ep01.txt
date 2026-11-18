@@ -1,0 +1,6 @@
+L1-hook-fast	11.19-13.47s in the recording	placed at 0.10s
+L2c	38.17-46.23s in the recording	placed at 5.20s
+L3c	54.80-57.45s in the recording	placed at 14.40s
+L4c	68.50-72.82s in the recording	placed at 18.60s
+L5c	85.40-90.11s in the recording	placed at 23.20s
+L6c	101.52-105.09s in the recording	placed at 29.00s

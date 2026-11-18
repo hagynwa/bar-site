@@ -14,7 +14,12 @@ import type { Film } from "./film";
 import { blob, fillShape, mix, smooth } from "./gallery";
 import { C, HAND, NUM, crescent, marker, measure, notebook, paperLayer, rect, ring, scribble, star, tape, wax, type Piece } from "./yaldut";
 
-const W = 1080, H = 1920, FPS = 30, DUR = 990;
+const W = 1080, H = 1920, FPS = 30, DUR = 1110;
+// The picture is cut to Bar's recorded takes (narration sets the clock). The scenes were drawn on a 990-frame
+// plan; line 2 runs 8 s instead of 6, so the bedroom holds 90 frames longer and the morning 30 frames longer.
+// `old` is the plan's frame for a frame of the film; NOW is the film's own frame (captions run on it).
+const oldOf = (n: number) => (n < 420 ? n : n < 990 ? n - 90 : n - 120);
+let NOW = 0;
 const RX = 940;                       // text hangs from just inside the red margin
 const cl = (x: number) => Math.max(0, Math.min(1, x));
 const span = (f: number, a: number, b: number) => cl((f - a) / (b - a));
@@ -58,20 +63,22 @@ const stamp = (g: Gfx, f: number) => {
 };
 // subtitles: on a torn white paper label, centred, under the collage (Rubik, legible at phone size)
 type Cap = { from: number; to: number; text: string };
+// film frames, measured from the recorded takes (05-voice/README.md)
 const CAPS: Cap[] = [
-  { from: 156, to: 243, text: "במחקר על כ-2,000 ילדים, מי שישנו ליד טלפון או טאבלט" },
-  { from: 243, to: 330, text: "ישנו בממוצע 20 דקות פחות, בלילות שלפני יום לימודים" },
-  { from: 348, to: 450, text: "5 לילות כאלה, וזה כבר כמעט שעתיים" },
-  { from: 468, to: 600, text: "רופאי הילדים בארה״ב ממליצים: בלי מכשירים בחדר השינה" },
-  { from: 606, to: 750, text: "אז אולי הלילה, גם לטלפון תהיה מיטה משלו. במטבח" },
+  { from: 156, to: 207, text: "במחקר על כ-2,000 ילדים," },
+  { from: 213, to: 348, text: "מי שישנו ליד טלפון או טאבלט, ישנו בממוצע 20 דקות פחות," },
+  { from: 354, to: 412, text: "בלילות שלפני יום לימודים." },
+  { from: 432, to: 520, text: "5 לילות כאלה, וזה כבר כמעט שעתיים." },
+  { from: 558, to: 690, text: "רופאי הילדים בארה״ב ממליצים: בלי מכשירים בחדר השינה." },
+  { from: 696, to: 840, text: "אז אולי הלילה, גם לטלפון תהיה מיטה משלו. במטבח." },
 ];
 const wrap = (g: Gfx, text: string, font: string, max: number): string[] => {
   const c = g.cur; c.save(); c.font = font; const words = text.split(" "), out: string[] = []; let line = "";
   for (const w of words) { const t = line ? line + " " + w : w; if (c.measureText(t).width > max && line) { out.push(line); line = w; } else line = t; }
   if (line) out.push(line); c.restore(); return out;
 };
-const caption = (g: Gfx, f: number) => {
-  const cap = CAPS.find((c) => f >= c.from && f < c.to); if (!cap) return;
+const caption = (g: Gfx, _f: number) => {
+  const f = NOW, cap = CAPS.find((c) => f >= c.from && f < c.to); if (!cap) return;
   const font = NUM(500, 46), lines = wrap(g, cap.text, font, 820), lh = 60, y0 = 1600 - ((lines.length - 1) * lh) / 2;
   const c = g.cur; c.save(); c.font = font; const wmax = Math.max(...lines.map((l) => c.measureText(l).width)); c.restore();
   const k = CAPS.indexOf(cap), drop = lay(f, cap.from, 6, [0, 26]);
@@ -386,7 +393,7 @@ const sBedroom = (ctx: Ctx, f: number, env: Env) => {
   const camDx = f >= 556 ? -60 * eIn(span(f, 556, 600)) : 0;
   const g = page(ctx, env, f, (g2) => {
     bedroomScene(g2, f);
-    source(g2, f, "Falbe et al., Pediatrics, 2015", 200, 330);
+    source(g2, f, "Falbe et al., Pediatrics, 2015", 200, 420);
     source(g2, f, "AAP, Pediatrics, 2016", 490, 600);
   }, { z: 1 + 0.03 * span(f, 110, 330), cx: 470, cy: 1218, dx: camDx });
   finish(g, f);
@@ -441,28 +448,28 @@ const yardEnd = (g: Gfx, f: number) => {
 // shot 7 · the end card (870-990)
 const sEnd = (ctx: Ctx, f: number, env: Env) => { const g = page(ctx, env, f, (g2) => endCard(g2, f), { z: 1 + 0.04 * span(f, 870, 990), cx: W / 2, cy: 900 }); g.paper("paper", 0.12); };
 
-const shot = (id: string, start: number, end: number, fn: (ctx: Ctx, f: number, env: Env) => void) => ({ id, start, end, draw: (ctx: Ctx, local: number, env: Env) => fn(ctx, start + local, env) });
+const shot = (id: string, start: number, end: number, fn: (ctx: Ctx, f: number, env: Env) => void) => ({ id, start, end, draw: (ctx: Ctx, local: number, env: Env) => { NOW = start + local; fn(ctx, oldOf(NOW), env); } });
 
 export const ep01: Film = {
   meta: {
     title: "עוד קצת ילדות · פרק 1 · שינה", W, H, fps: FPS, bpm: 60, durationFrames: DUR, kind: "explainer", poster: 40,
-    holds: [[930, 990, "end card: the name, the logo and the question are read"]],
+    holds: [[1050, 1110, "end card: the name, the logo and the question are read"]],
     captions: [
-      { from: 0, to: 75, text: "איפה הטלפון של הילד שלך ישן בלילה?" },
+      { from: 3, to: 72, text: "איפה הטלפון של הילד שלך ישן בלילה?" },
       ...CAPS,
-      { from: 780, to: 866, text: "עוד קצת שינה. עוד קצת ילדות." },
+      { from: 870, to: 980, text: "עוד קצת שינה. עוד קצת ילדות." },
     ],
   },
   assets: { images: { logo: "assets/brand/logo.png" } },
   shots: [
     shot("yard", 0, 120, (c, f, e) => (f < 110 ? sYard(c, f, e) : sShutters(c, f, e))),
     shot("open", 120, 150, sShutters),
-    shot("bedroom", 150, 330, sBedroom),
-    shot("nights", 330, 480, (c, f, e) => (f < 468 ? sNights(c, f, e) : sBedroom(c, f, e))),
-    shot("hand", 480, 600, sBedroom),
-    shot("kitchen", 600, 750, sKitchen),
-    shot("morning", 750, 870, sMorning),
-    shot("end", 870, DUR, sEnd),
+    shot("bedroom", 150, 420, sBedroom),
+    shot("nights", 420, 570, (c, f, e) => (f < 468 ? sNights(c, f, e) : sBedroom(c, f, e))),
+    shot("hand", 570, 690, sBedroom),
+    shot("kitchen", 690, 840, sKitchen),
+    shot("morning", 840, 990, sMorning),
+    shot("end", 990, DUR, sEnd),
   ],
 };
 void rng; void blob;
