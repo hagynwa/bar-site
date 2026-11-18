@@ -53,13 +53,13 @@ const highlight = (g: Gfx, f: number, text: string, y: number, px: number, at: n
   const w = measure(g, text, px);
   g.group("plain", () => scribble(g, rect(RX - w - 16, y - px * 0.42, RX + 14, y + 16), color, { angle: -0.12, gap: 8, w: 9, alpha: 0.9, seed, p: span(f, at, at + 12) }), { textures: ["pencilTooth"], blend: "multiply" });
 };
-// the campaign stamp, top left: written once in green crayon-marker, circled, then it stays
-const STAMP = "עוד קצת ילדות";
+// the campaign stamp, top left: the logo as a white sticker, pressed on right after the hook (the same in every episode)
+const size = (img: CanvasImageSource): P => { const i = img as HTMLImageElement; return [i.naturalWidth || i.width, i.naturalHeight || i.height]; };
 const stamp = (g: Gfx, f: number) => {
-  if (f < 60) return;
-  const x = 330, y = 214, w = measure(g, STAMP, 40, 700);
-  g.group("plain", () => marker(g, STAMP, x, y, 40, mix(C.green, C.navy, 0.15), 700, span(f, 60, 78)));
-  wax(g, () => g.pen(smooth(ring(x - w / 2, y - 14, w / 2 + 26, 36, 14, -0.3), true, 6), { w: 3, color: C.green, seed: 31, wobble: 2.5, boil: 0, opacity: 0.85, retrace: false, progress: span(f, 74, 90) }));
+  const img = g.env.image?.("yaldutH"); if (f < 60 || !img) return;
+  const [iw, ih] = size(img), w = 330, h = (w * ih) / iw, x0 = 36, y0 = 112, d = lay(f, 60, 10, [0, -46]);
+  paperLayer(g, [{ shape: rect(x0 - 10, y0 - 8, x0 + w + 10, y0 + h + 8), color: "#FFFFFF", torn: 1.6, seed: 41, fibre: 0.2, lift: 0.6 * d.lift, off: d.off, hide: d.hide }]);
+  if (!d.hide) g.group("plain", () => { g.cur.drawImage(img, x0 + d.off[0], y0 + d.off[1], w, h); g.touch(x0, y0, x0 + w, y0 + h + 60); });
 };
 // subtitles: on a torn white paper label, centred, under the collage (Rubik, legible at phone size)
 type Cap = { from: number; to: number; text: string };
@@ -273,24 +273,34 @@ const nights = (g: Gfx, f: number) => {
 };
 
 // ---------------------------------------------------------------- the end card (the same in every episode)
+// The campaign logo builds itself from its own layers (brand/logo/parts, layout.json): the hills are laid
+// down, the sun rises from behind them, the rays are drawn one by one, and the words are written on.
+const LOGO = { W: 654.912, H: 369.38, ix: 203.456, iy: 24, sc: 1.55, sun: [80, 66, 34], rays: [-90, -54, -126, -18, -162], r0: 44, r1: 56, ray: 7, base: 104, words: [24, 198.5, 630.912, 345.38] };
 const endCard = (g: Gfx, f: number) => {
-  const t = STAMP, px = 128, w = measure(g, t, px);
-  g.group("plain", () => marker(g, t, W / 2 + w / 2, 520, px, C.navy, 800, span(f, 869, 888)));
-  wax(g, () => g.pen(smooth([[W / 2 + w / 2 + 10, 560], [W / 2, 574], [W / 2 - w / 2 - 10, 556]], false, 8), { w: 9, color: C.green, seed: 610, wobble: 2, boil: 0, opacity: 0.9, retrace: true, progress: span(f, 886, 904) }));
-  const img = g.env.image?.("logo");
-  if (img) {
-    const d = lay(f, 878, 12, [0, -50]), lw = 760, lh = (lw * 514) / 900, x0 = (W - lw) / 2 + d.off[0], y0 = 700 + d.off[1];
-    if (!d.hide) {
-      g.group("plain", () => { const c = g.cur; c.save(); c.globalAlpha = 0.28; c.drawImage(img, x0 + 6 * d.lift, y0 + 10 * d.lift, lw, lh); c.restore(); g.touch(x0, y0, x0 + lw + 30, y0 + lh + 40); }, { blur: 6, alpha: 0.5 });
-      g.group("plain", () => { const c = g.cur; c.drawImage(img, x0, y0, lw, lh); g.touch(x0, y0, x0 + lw, y0 + lh); });
-      // crayon rays round the logo's sun, turning slowly (something always moves)
-      const sx = x0 + lw * 0.778, sy = y0 + lh * 0.09;
-      wax(g, () => { for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2 + f * 0.01; g.pen([[sx + Math.cos(a) * 38, sy + Math.sin(a) * 38], [sx + Math.cos(a) * 58, sy + Math.sin(a) * 58]], { w: 4, color: C.sun, seed: 620 + k, wobble: 0.8, boil: 0, opacity: 0.9, retrace: false, progress: span(f, 896 + k * 2, 902 + k * 2) }); } });
-    }
+  const sun = g.env.image?.("ySun"), hills = g.env.image?.("yHills"), words = g.env.image?.("yWords"), lead = g.env.image?.("logo");
+  const w = 860, k = w / LOGO.W, h = LOGO.H * k, x0 = (W - w) / 2, y0 = 280, c = g.cur;
+  const at = (x: number, y: number): P => [x0 + (LOGO.ix + x * LOGO.sc) * k, y0 + (LOGO.iy + y * LOGO.sc) * k];
+  const baseY = at(0, LOGO.base)[1];
+  if (sun && f >= 871) {   // rising from behind the hills, never below them
+    const rise = eOut(span(f, 871, 897)), dy = (1 - rise) * 80 * LOGO.sc * k;
+    g.group("plain", () => { c.save(); c.beginPath(); c.rect(0, 0, W, baseY); c.clip(); c.drawImage(sun, x0, y0 + dy, w, h); c.restore(); g.touch(x0, y0, x0 + w, baseY); });
   }
-  const q = "מה דעתכם לנסות השבוע?", qw = measure(g, q, 70, 700);
-  g.group("plain", () => marker(g, q, W / 2 + qw / 2, 1300, 70, C.marker, 700, span(f, 904, 926)));
-  if (f >= 930) g.group("plain", () => { const c = g.cur; c.save(); c.font = NUM(500, 36); c.direction = "rtl"; c.textAlign = "center"; c.fillStyle = "#4A5578"; c.fillText("כל המקורות באתר", W / 2, 1400); c.restore(); g.touch(300, 1360, 780, 1412); });
+  if (hills) { const u = eOut(span(f, 869, 879)), d = { off: [0, 40 * (1 - u)] as P, hide: f < 869 }; if (!d.hide) g.group("plain", () => { c.drawImage(hills, x0 + d.off[0], y0 + d.off[1], w, h); g.touch(x0, y0, x0 + w, y0 + h); }); }
+  const [scx, scy] = at(LOGO.sun[0], LOGO.sun[1]);
+  wax(g, () => LOGO.rays.forEach((deg, i) => { const a = (deg * Math.PI) / 180, r0 = LOGO.r0 * LOGO.sc * k, r1 = LOGO.r1 * LOGO.sc * k;
+    g.pen([[scx + Math.cos(a) * r0, scy + Math.sin(a) * r0], [scx + Math.cos(a) * r1, scy + Math.sin(a) * r1]], { w: (LOGO.ray * LOGO.sc * k) / 1.45, color: C.sun, seed: 620 + i, wobble: 0.6, boil: 0, opacity: 1, retrace: false, taper: 0, progress: span(f, 890 + i * 3, 896 + i * 3) }); }));
+  if (words) {   // written on from the right, the way the words are read
+    const [wx0, wy0, wx1, wy1] = LOGO.words.map((v) => v * k), p = span(f, 877, 902), wd = wx1 - wx0;
+    if (p > 0) g.group("plain", () => { c.save(); c.beginPath(); c.rect(x0 + wx1 - wd * p - 6, y0 + wy0 - 10, wd * p + 20, wy1 - wy0 + 30); c.clip(); c.drawImage(words, x0, y0, w, h); c.restore(); g.touch(x0 + wx0, y0 + wy0, x0 + wx1, y0 + wy1); });
+  }
+  const q = "מה דעתכם לנסות השבוע?", qw = measure(g, q, 66, 700);
+  g.group("plain", () => marker(g, q, W / 2 + qw / 2, 930, 66, C.marker, 700, span(f, 906, 926)));
+  // presented by: the parents' leadership, smaller, under its own label
+  const by = "מטעם", bw = measure(g, by, 40, 700);
+  g.group("plain", () => marker(g, by, W / 2 + bw / 2, 1100, 40, "#4A5578", 700, span(f, 914, 920)));
+  if (lead) { const d = lay(f, 918, 10, [0, -40]), lw = 470, lh = (lw * 514) / 900, lx = (W - lw) / 2 + d.off[0], ly = 1130 + d.off[1];
+    if (!d.hide) g.group("plain", () => { c.drawImage(lead, lx, ly, lw, lh); g.touch(lx, ly, lx + lw, ly + lh); }); }
+  if (f >= 932) g.group("plain", () => { c.save(); c.font = NUM(500, 36); c.direction = "rtl"; c.textAlign = "center"; c.fillStyle = "#4A5578"; c.fillText("כל המקורות באתר", W / 2, 1520); c.restore(); g.touch(300, 1480, 780, 1532); });
 };
 
 // ---------------------------------------------------------------- flaps: shutters and page turns
@@ -446,7 +456,17 @@ const yardEnd = (g: Gfx, f: number) => {
   yard(g, { childLit: 0, kitchenDot: 1, zzz: span(f, 770, 796), day: span(f, 800, 838), sun: span(f, 812, 856), rays: span(f, 846, 866), f });
 };
 // shot 7 · the end card (870-990)
-const sEnd = (ctx: Ctx, f: number, env: Env) => { const g = page(ctx, env, f, (g2) => endCard(g2, f), { z: 1 + 0.04 * span(f, 870, 990), cx: W / 2, cy: 900 }); g.paper("paper", 0.12); };
+const sEnd = (ctx: Ctx, f: number, env: Env) => {
+  const g = page(ctx, env, f, (g2) => endCard(g2, f), { z: 1 + 0.08 * eOut(span(f, 884, 960)), cx: W / 2, cy: 760 });
+  if (f < 888) {   // the morning page turns over onto the end card
+    const top = offscreen(env, "morning"); const gt = new Gfx(top.ctx, env, f, PENCIL); top.ctx.setTransform(env.scale, 0, 0, env.scale, 0, 0);
+    notebook(gt, W, H); yardEnd(gt, 869); stamp(gt, 869); gt.paper("paper", 0.12);
+    const phi = (Math.PI / 2) * eIO(span(f, 870, 888));
+    flapShadow(ctx, env, 0, W, "right", phi); flap(ctx, env, top, 0, W, "right", phi);
+    ctx.setTransform(env.scale, 0, 0, env.scale, 0, 0);
+  }
+  g.paper("paper", 0.12);
+};
 
 const shot = (id: string, start: number, end: number, fn: (ctx: Ctx, f: number, env: Env) => void) => ({ id, start, end, draw: (ctx: Ctx, local: number, env: Env) => { NOW = start + local; fn(ctx, oldOf(NOW), env); } });
 
@@ -460,7 +480,7 @@ export const ep01: Film = {
       { from: 870, to: 980, text: "עוד קצת שינה. עוד קצת ילדות." },
     ],
   },
-  assets: { images: { logo: "assets/brand/logo.png" } },
+  assets: { images: { logo: "assets/brand/logo.png", yaldutH: "assets/brand/yaldut/logo-horizontal.png", ySun: "assets/brand/yaldut/sun.png", yHills: "assets/brand/yaldut/hills.png", yWords: "assets/brand/yaldut/words.png" } },
   shots: [
     shot("yard", 0, 120, (c, f, e) => (f < 110 ? sYard(c, f, e) : sShutters(c, f, e))),
     shot("open", 120, 150, sShutters),
