@@ -46,7 +46,7 @@ const headline = (g: Gfx, f: number, lines: string[], at: number, y0: number, px
 // crayon highlighter under one line of a headline
 const highlight = (g: Gfx, f: number, text: string, y: number, px: number, at: number, seed: number, color = C.page) => {
   const w = measure(g, text, px);
-  wax(g, () => scribble(g, rect(RX - w - 16, y - px * 0.42, RX + 14, y + 16), color, { angle: -0.12, gap: 8, w: 9, alpha: 0.9, seed, p: span(f, at, at + 12) }));
+  g.group("plain", () => scribble(g, rect(RX - w - 16, y - px * 0.42, RX + 14, y + 16), color, { angle: -0.12, gap: 8, w: 9, alpha: 0.9, seed, p: span(f, at, at + 12) }), { textures: ["pencilTooth"], blend: "multiply" });
 };
 // the campaign stamp, top left: written once in green crayon-marker, circled, then it stays
 const STAMP = "עוד קצת ילדות";
@@ -241,8 +241,8 @@ const kitchen = (g: Gfx, o: KitOpts) => {
 
 // ---------------------------------------------------------------- five nights (the second notebook page)
 const nights = (g: Gfx, f: number) => {
-  headline(g, f, ["5 לילות"], 340, 420, 150, 0, 14);
   highlight(g, f, "5 לילות", 420, 150, 354, 501);
+  headline(g, f, ["5 לילות"], 340, 420, 150, 0, 14);
   const labels = ["א", "ב", "ג", "ד", "ה"], cy = 820, r = 70;
   labels.forEach((lab, i) => {
     const cx = RX - 90 - i * 182, at = 372 + i * 12;   // right to left, one every 0.4 s
@@ -366,13 +366,13 @@ const sShutters = (ctx: Ctx, f: number, env: Env) => {
 // the bedroom page as it stands at frame f (used by shots 2-4 and under the page turns)
 const bedroomScene = (g: Gfx, f: number) => {
   if (f < 450) {
-    headline(g, f, ["20 דקות"], 140, 400, 170, 0, 12);
     highlight(g, f, "20 דקות", 400, 170, 152, 302);
+    headline(g, f, ["20 דקות"], 140, 400, 170, 0, 12);
     headline(g, f, ["פחות שינה בלילה"], 162, 560, 88, 0, 14);
     bedroom(g, { f, lit: 1, eyes: 0, hand: null, phoneOn: true, wedge: span(f, 196, 240), buzz: f % 30 < 14 });
   } else {
-    headline(g, f, ["בלי מכשירים", "בחדר השינה"], 474, 380, 112, 140, 14);
     highlight(g, f, "בחדר השינה", 520, 112, 506, 303);
+    headline(g, f, ["בלי מכשירים", "בחדר השינה"], 474, 380, 112, 140, 14);
     // the hand comes in from the right, low over the bed, takes the phone and leaves the way it came
     const reach = eOut(span(twos(f), 470, 506)), lift = eIO(span(f, 516, 556)), exit = eIn(span(f, 556, 600));
     const hx = 1500 + (617 - 1500) * reach + 900 * exit, hy = 1214 - 90 * lift;
@@ -408,8 +408,8 @@ const sNights = (ctx: Ctx, f: number, env: Env) => {
 // shot 5 · the kitchen: the hand carries the phone in, lays it down, a blanket over it (600-750)
 const sKitchen = (ctx: Ctx, f: number, env: Env) => {
   const g = page(ctx, env, f, (g2) => {
-    headline(g2, f, ["לטלפון יש", "מיטה משלו"], 612, 380, 116, 146, 14);
     highlight(g2, f, "מיטה משלו", 526, 116, 640, 304);
+    headline(g2, f, ["לטלפון יש", "מיטה משלו"], 612, 380, 116, 146, 14);
     const inn = eOut(span(f, 600, 632)), down = eIO(span(f, 632, 656)), out = eIn(span(f, 666, 690));
     const placed = f >= 656;
     const hx = -500 + (411 - -500) * inn - 900 * out, hy = 1060 + 88 * down - 40 * out;
@@ -422,7 +422,7 @@ const sMorning = (ctx: Ctx, f: number, env: Env) => {
   if (f < 768) {
     const g = page(ctx, env, f, (g2) => yardEnd(g2, f), { z: 1.6, cx: 640, cy: 1420 });
     const top = offscreen(env, "kit"); const gt = new Gfx(top.ctx, env, f, PENCIL); top.ctx.setTransform(env.scale, 0, 0, env.scale, 0, 0); notebook(gt, W, H);
-    kitchen(gt, { f: 749, hand: null, placed: true, blanket: { off: [0, 0], lift: 1, hide: false }, screen: 0, zzz: 1 }); headline(gt, 749, ["לטלפון יש", "מיטה משלו"], 612, 380, 116, 146, 14); highlight(gt, 749, "מיטה משלו", 526, 116, 646, 304); gt.paper("paper", 0.12);
+    kitchen(gt, { f: 749, hand: null, placed: true, blanket: { off: [0, 0], lift: 1, hide: false }, screen: 0, zzz: 1 }); highlight(gt, 749, "מיטה משלו", 526, 116, 640, 304); headline(gt, 749, ["לטלפון יש", "מיטה משלו"], 612, 380, 116, 146, 14); gt.paper("paper", 0.12);
     const phi = (Math.PI / 2) * eIO(span(f, 750, 768));
     flapShadow(ctx, env, 0, W / 2, "left", phi); flapShadow(ctx, env, W / 2, W, "right", phi);
     flap(ctx, env, top, 0, W / 2, "left", phi); flap(ctx, env, top, W / 2, W, "right", phi);
@@ -434,8 +434,8 @@ const sMorning = (ctx: Ctx, f: number, env: Env) => {
 };
 const yardEnd = (g: Gfx, f: number) => {
   const lines = ["עוד קצת שינה.", "עוד קצת ילדות."];
-  headline(g, f, lines, 790, 380, 112, 146, 16);
   highlight(g, f, lines[1], 526, 112, 822, 305, C.leaf);
+  headline(g, f, lines, 790, 380, 112, 146, 16);
   yard(g, { childLit: 0, kitchenDot: 1, zzz: span(f, 770, 796), day: span(f, 800, 838), sun: span(f, 812, 856), rays: span(f, 846, 866), f });
 };
 // shot 7 · the end card (870-990)

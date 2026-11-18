@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>עוד קצת ילדות · אפשרויות לוגו</title>
+<style>
+@font-face { font-family: "Fredoka"; src: url("../anim/assets/fonts/Fredoka.ttf"); font-weight: 300 700; }
+@font-face { font-family: "Playpen"; src: url("../anim/assets/fonts/PlaypenSansHebrew.ttf"); font-weight: 100 800; }
+@font-face { font-family: "Rubik"; src: url("../anim/assets/fonts/Rubik.ttf"); font-weight: 300 900; }
+:root { --navy: #001A3F; --green: #699F03; --leaf: #B5D96E; --sun: #FECC0C; --page: #FEE55A; --heart: #F61621; --sky: #9FDCF6; --cream: #FBF5E6; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #EEF0F4; font-family: "Rubik", sans-serif; color: var(--navy); }
+.sheet { width: 1800px; padding: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.opt { background: #fff; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+.opt h2 { margin: 0; font: 600 26px "Rubik"; }
+.opt h2 span { font-weight: 400; color: #5B627A; font-size: 20px; }
+.rec { outline: 4px solid var(--navy); }
+.row { display: flex; gap: 18px; align-items: center; }
+.tile { border-radius: 14px; display: grid; place-items: center; }
+.on-white { background: #fff; border: 1px solid #DCE0EC; height: 260px; }
+.on-navy { background: var(--navy); height: 200px; }
+.on-paper { height: 200px; background-color: #FBFAF3; background-image: linear-gradient(#BCD3EE 1px, transparent 1px), linear-gradient(90deg, #BCD3EE 1px, transparent 1px); background-size: 26px 26px; }
+.icons { display: flex; gap: 16px; }
+.icons .tile { width: 120px; height: 120px; }
+.note { font-size: 18px; line-height: 1.5; color: #3A4260; margin: 0; }
+
+/* lockup A: the window */
+.lockA { display: flex; align-items: center; gap: 18px; direction: rtl; }
+.lockA .words { display: flex; flex-direction: column; line-height: .9; }
+.lockA .w1 { font: 600 44px "Fredoka"; color: var(--green); }
+.lockA .w2 { font: 700 92px "Fredoka"; color: var(--navy); position: relative; }
+.lockA .w2::after { content: ""; position: absolute; right: 4px; left: 6px; bottom: 6px; height: 14px; background: var(--page); z-index: -1; border-radius: 8px; transform: rotate(-1deg); }
+.lockA .w2 { z-index: 0; isolation: isolate; }
+.lockA.inv .w1 { color: var(--leaf); }
+.lockA.inv .w2 { color: #fff; }
+.lockA.inv .w2::after { background: #7A6A1A; }
+/* lockup B: handwritten */
+.lockB { display: flex; flex-direction: column; align-items: center; }
+.lockB .w { font: 800 78px "Playpen"; color: var(--navy); line-height: 1.05; position: relative; }
+.lockB.inv .w { color: #fff; }
+/* lockup C: paper label */
+.lockC { position: relative; display: grid; place-items: center; }
+.lockC .w { font: 700 54px "Fredoka"; color: #fff; line-height: 1; text-align: center; }
+.lockC .w b { display: block; font-size: 84px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- hand-made edges: a little turbulence pushes every edge off the ruler, like cut paper and crayon -->
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+    <filter id="torn" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" seed="9"/><feDisplacementMap in="SourceGraphic" scale="9"/></filter>
+    <clipPath id="winClip"><rect x="10" y="10" width="100" height="130" rx="24"/></clipPath>
+    <!-- icon A: a window that is also the shape of a phone; inside it, the yard -->
+    <symbol id="iconA" viewBox="0 0 120 150">
+      <g clip-path="url(#winClip)" filter="url(#rough)">
+        <rect x="0" y="0" width="120" height="150" fill="#9FDCF6"/>
+        <circle cx="86" cy="36" r="15" fill="#FECC0C"/>
+        <path d="M0 100 C30 84 60 94 80 88 C96 83 110 86 120 90 L120 150 L0 150Z" fill="#699F03"/>
+        <path d="M0 122 C34 108 70 118 120 106 L120 150 L0 150Z" fill="#B5D96E"/>
+        <rect x="56" y="0" width="8" height="150" fill="#FBF5E6"/>
+        <rect x="0" y="54" width="120" height="8" fill="#FBF5E6"/>
+      </g>
+      <rect x="10" y="10" width="100" height="130" rx="24" fill="none" stroke="#001A3F" stroke-width="10" filter="url(#rough)"/>
+    </symbol>
+    <!-- icon B: a crayon sun coming up over a green hill -->
+    <symbol id="iconB" viewBox="0 0 160 110">
+      <g filter="url(#rough)">
+        <g stroke="#FECC0C" stroke-width="7" stroke-linecap="round">
+          <line x1="80" y1="14" x2="80" y2="2"/><line x1="44" y1="28" x2="36" y2="18"/><line x1="116" y1="28" x2="124" y2="18"/><line x1="26" y1="56" x2="12" y2="52"/><line x1="134" y1="56" x2="148" y2="52"/>
+        </g>
+        <circle cx="80" cy="70" r="40" fill="#FECC0C"/>
+        <path d="M0 78 C40 62 110 66 160 76 L160 110 L0 110Z" fill="#699F03"/>
+        <path d="M0 96 C50 84 110 92 160 88 L160 110 L0 110Z" fill="#B5D96E"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="sheet">
+  <!-- A -->
+  <section class="opt rec" id="A">
+    <h2>א · החלון <span>(ההמלצה)</span></h2>
+    <div class="tile on-white"><div class="lockA" id="lockA"><svg width="118" height="148"><use href="#iconA"/></svg><div class="words"><span class="w1">עוד קצת</span><span class="w2">ילדות</span></div></div></div>
+    <div class="tile on-navy"><div class="lockA inv"><svg width="96" height="120"><use href="#iconA"/></svg><div class="words"><span class="w1">עוד קצת</span><span class="w2">ילדות</span></div></div></div>
+    <div class="icons"><div class="tile on-white"><svg width="80" height="100"><use href="#iconA"/></svg></div><div class="tile on-paper"><svg width="80" height="100"><use href="#iconA"/></svg></div><div class="tile on-navy"><svg width="80" height="100"><use href="#iconA"/></svg></div></div>
+    <p class="note">מלבן מעוגל, בצורה של טלפון, שהוא בעצם חלון. בפנים: שמיים, שמש וגבעות, כמו בלוגו של ההנהגה. המסר כולו בסמל: במקום מסך, חלון לחצר. מתחבר לסרטון, שבו החלון של הילד הוא הגיבור. עובד גם כאייקון קטן (פרופיל, פינת הסרטון).</p>
+  </section>
+  <!-- B -->
+  <section class="opt" id="B">
+    <h2>ב · שמש בכתב יד</h2>
+    <div class="tile on-white"><div class="lockB" id="lockB"><svg width="150" height="103"><use href="#iconB"/></svg><span class="w">עוד קצת ילדות</span></div></div>
+    <div class="tile on-navy"><div class="lockB inv"><svg width="110" height="76"><use href="#iconB"/></svg><span class="w" style="font-size:60px">עוד קצת ילדות</span></div></div>
+    <div class="icons"><div class="tile on-white"><svg width="100" height="69"><use href="#iconB"/></svg></div><div class="tile on-paper"><svg width="100" height="69"><use href="#iconB"/></svg></div><div class="tile on-navy"><svg width="100" height="69"><use href="#iconB"/></svg></div></div>
+    <p class="note">שמש בעפרון שעולה מעל הגבעה, וכתב היד של הסדרה. הכי ילדי וחם, קרוב מאוד ללוגו של ההנהגה. פחות מספר את סיפור הטלפון, וכתב היד פחות קריא בגדלים קטנים.</p>
+  </section>
+  <!-- C -->
+  <section class="opt" id="C">
+    <h2>ג · תווית נייר</h2>
+    <div class="tile on-white"><div class="lockC" id="lockC"><svg width="380" height="230" viewBox="0 0 380 230" style="position:absolute"><g filter="url(#torn)"><rect x="20" y="22" width="340" height="186" rx="6" fill="#699F03" transform="rotate(-2 190 115)"/></g><g filter="url(#rough)"><circle cx="330" cy="40" r="26" fill="#FECC0C"/></g></svg><div class="w" style="position:relative">עוד קצת<b>ילדות</b></div></div></div>
+    <div class="tile on-paper"><div class="lockC"><svg width="300" height="180" viewBox="0 0 380 230" style="position:absolute"><g filter="url(#torn)"><rect x="20" y="22" width="340" height="186" rx="6" fill="#699F03" transform="rotate(-2 190 115)"/></g><g filter="url(#rough)"><circle cx="330" cy="40" r="26" fill="#FECC0C"/></g></svg><div class="w" style="position:relative;font-size:42px">עוד קצת<b style="font-size:66px">ילדות</b></div></div></div>
+    <div class="icons"><div class="tile on-white"><svg width="96" height="96" viewBox="0 0 120 120"><g filter="url(#torn)"><circle cx="60" cy="62" r="50" fill="#699F03"/></g><text x="60" y="76" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="40" fill="#fff">ילדות</text></svg></div><div class="tile on-navy"><svg width="96" height="96" viewBox="0 0 120 120"><g filter="url(#torn)"><circle cx="60" cy="62" r="50" fill="#699F03"/></g><text x="60" y="76" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="40" fill="#fff">ילדות</text></svg></div></div>
+    <p class="note">פיסת נייר ירוקה קרועה עם השם, כמו מדבקה שהודבקה במחברת. פשוט ונקי ומתאים לסגנון הקולאז'. בלי סמל של רעיון, ולכן הכי פחות מספר משהו.</p>
+  </section>
+</div>
+</body>
+</html>
