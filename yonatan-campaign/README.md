@@ -16,7 +16,7 @@
 |---|---|---|
 | 1. תוכנית הקמפיין | [`01-plan.md`](01-plan.md) | הושלם |
 | 2. שפה עיצובית | [`02-design/`](02-design/README.md) | 3 כיוונים, ממתין לבחירה |
-| 3. תסריטים, קריינות ומוזיקה | `03-scripts/` | לא התחיל |
+| 3. תסריטים, קריינות ומוזיקה | [`03-scripts/`](03-scripts/principles.md) | פיילוט: פרק 1 כתוב, ממתין לאישור |
 | 4. הפקת הסרטונים | `04-videos/` | לא התחיל |
 | 5. קריינות | `05-voice/` | לא התחיל |
 | 6. אתר + אמנה + חתימות | `site/` | לא התחיל |
@@ -30,6 +30,11 @@
 - עמוד הוועדה: https://claude.ai/artifact/8CmgBBquRSY1cE3A1oKstL
 - הוועדה מתקדמת בקצב שלה. כרגע העמוד המפורסם מציג את **שלב 1**, וההחלטות שלמעלה הן הנחות עבודה עד שהוועדה תאשר אותן.
 - גרסת שלב 2 של העמוד שמורה ב-`committee/committee-room-stage2.html`. כדי לפרסם אותה, מעתיקים אותה על `committee-room.html` ומפרסמים (עם `logo.webp`).
+
+## מחקר
+
+- [`research/hooks-and-persuasion.md`](research/hooks-and-persuasion.md): הוקים, צפייה ושכנוע (באנגלית). תמצית בעברית: [`03-scripts/principles.md`](03-scripts/principles.md)
+- [`research/ep1-sleep-facts.md`](research/ep1-sleep-facts.md): המדע של פרק 1
 
 ## כלים
 
