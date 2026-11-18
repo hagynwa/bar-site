@@ -12,3 +12,9 @@
 | 6. אתר + אמנה + חתימות | `site/` | לא התחיל |
 | 7. הודעות הפצה וטיזרים | `07-distribution/` | לא התחיל |
 | 8. לו"ז והוצאה לפועל | `08-schedule.md` | לא התחיל |
+
+## תקשור לוועדת הטלפונים
+
+בכל שלב מעדכנים את עמוד הוועדה (`committee/committee-room.html`, מתפרסם לאותו קישור) ומנסחים הודעת וואטסאפ לוועדה ב-`committee/messages.md`.
+
+- עמוד הוועדה: https://claude.ai/artifact/8CmgBBquRSY1cE3A1oKstL

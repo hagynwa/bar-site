@@ -1,0 +1,283 @@
+<title>חדר ועדת הטלפונים</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: a single reading column, like a well-kept committee folder. Stage strip on top, current stage expanded, decisions at the end. */
+:root {
+  --paper: #F5F6FA;
+  --card: #FFFFFF;
+  --ink: #1A2038;
+  --muted: #5B627A;
+  --line: #DCE0EC;
+  --accent: #2C47C7;
+  --accent-soft: #E6EBFF;
+  --marker: #FFD43B;
+  --marker-ink: #1A2038;
+  --mark-bg: #FFD43B;
+  --pact: #0F8A6A;
+  --pact-soft: #DDF3EC;
+  --font-display: "Secular One", "Assistant", "Arial Hebrew", Arial, sans-serif;
+  --font-body: "Assistant", "Arial Hebrew", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11152A; --card: #1A1F38; --ink: #E9ECF7; --muted: #A2A9C2; --line: #2C3354;
+    --accent: #9DB0FF; --accent-soft: #252E5A; --marker: #F5C933; --marker-ink: #11152A; --mark-bg: #6E5612;
+    --pact: #4FD1AB; --pact-soft: #143A33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11152A; --card: #1A1F38; --ink: #E9ECF7; --muted: #A2A9C2; --line: #2C3354;
+  --accent: #9DB0FF; --accent-soft: #252E5A; --marker: #F5C933; --marker-ink: #11152A; --mark-bg: #6E5612;
+  --pact: #4FD1AB; --pact-soft: #143A33; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6; }
+.wrap {
+  max-width: 760px; margin: 0 auto;
+  padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 40px;
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 6vw, 44px); }
+h2 { font-size: 26px; }
+h3 { font-size: 19px; }
+p { margin: 0; }
+.eyebrow { font-weight: 700; font-size: 14px; letter-spacing: .04em; color: var(--muted); }
+.mark { background: linear-gradient(transparent 55%, var(--mark-bg) 55%); color: inherit; padding: 0 2px; }
+section { display: flex; flex-direction: column; gap: 16px; }
+.lead { font-size: 19px; color: var(--ink); max-width: 62ch; }
+.muted { color: var(--muted); }
+
+/* header */
+header { display: flex; flex-direction: column; gap: 12px; }
+.from { font-size: 15px; color: var(--muted); }
+
+/* stage strip */
+.stages { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.stages li { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stages .n { font-weight: 800; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stages .t { font-weight: 600; font-size: 15px; line-height: 1.3; }
+.stages li.now { border-color: var(--accent); background: var(--accent-soft); }
+.stages li.now .n { color: var(--accent); }
+@media (max-width: 560px) { .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* insight block */
+.insight { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.insight p.big { font-family: var(--font-display); font-size: 22px; line-height: 1.35; }
+
+/* goals */
+.goals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.goals div { border-top: 3px solid var(--accent); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.goals b { font-size: 17px; }
+.goals span { color: var(--muted); font-size: 15px; line-height: 1.45; }
+@media (max-width: 560px) { .goals { grid-template-columns: 1fr; } }
+
+/* video anatomy, drawn to scale over 35 seconds */
+.anatomy { display: flex; flex-direction: column; gap: 10px; }
+.bar { display: flex; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.bar > div { display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; min-width: 0; }
+.seg-hook { background: var(--marker); color: var(--marker-ink); }
+.seg-sting { background: var(--ink); color: var(--paper); }
+.seg-fact { background: var(--accent-soft); color: var(--ink); }
+.seg-drip { background: var(--pact-soft); color: var(--ink); }
+.seg-close { background: var(--ink); color: var(--paper); }
+.ticks { position: relative; height: 20px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; top: 0; }
+.ticks .mid { transform: translateX(50%); }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 20px; margin: 0; padding: 0; list-style: none; font-size: 15px; }
+.legend li { display: flex; gap: 8px; align-items: baseline; }
+.sw { width: 12px; height: 12px; border-radius: 3px; flex: none; border: 1px solid var(--line); transform: translateY(1px); }
+
+/* episodes */
+.eps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.eps li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 4px 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.eps .num { font-family: var(--font-display); font-size: 28px; line-height: 1; color: var(--accent); grid-row: span 2; font-variant-numeric: tabular-nums; }
+.eps .topic { font-weight: 800; font-size: 18px; }
+.eps .hook { grid-column: 2; color: var(--ink); }
+.eps .src { grid-column: 2 / 4; font-size: 14px; color: var(--muted); direction: ltr; text-align: right; unicode-bidi: plaintext; }
+.eps .tag { font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 999px; white-space: nowrap; align-self: center; }
+.tag.aware { background: var(--accent-soft); color: var(--accent); }
+.tag.drip { background: var(--pact-soft); color: var(--pact); }
+.tag.pact { background: var(--pact); color: var(--card); }
+
+/* pact */
+.pact { background: var(--pact-soft); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.pact ul { margin: 0; padding-inline-start: 20px; display: flex; flex-direction: column; gap: 6px; }
+
+/* principles */
+.rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.rules div { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.rules b { font-size: 16px; }
+.rules span { font-size: 15px; color: var(--muted); line-height: 1.5; }
+@media (max-width: 560px) { .rules { grid-template-columns: 1fr; } }
+
+/* decisions */
+.decisions { counter-reset: d; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.decisions li { background: var(--card); border: 2px solid var(--ink); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.decisions .q { font-weight: 800; font-size: 17px; }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opts span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: 15px; background: var(--paper); }
+.why { font-size: 15px; color: var(--muted); }
+
+/* timeline */
+.weeks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; border-inline-start: 2px solid var(--line); }
+.weeks li { padding: 0 18px 16px; position: relative; display: flex; flex-direction: column; gap: 2px; }
+.weeks li::before { content: ""; position: absolute; inset-inline-start: -7px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 2px solid var(--accent); }
+.weeks li.launch::before { background: var(--pact); border-color: var(--pact); }
+.weeks b { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.note { font-size: 15px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+a { color: var(--accent); }
+</style>
+
+<main class="wrap" dir="rtl" lang="he">
+
+  <header>
+    <span class="eyebrow">עדכון לוועדה · שלב 1 מתוך 8</span>
+    <h1>תוכנית הקמפיין</h1>
+    <p class="from">הנהגת ההורים · בית ספר יונתן, צופים · עמוד מתעדכן: בכל שלב יתווסף כאן הסבר חדש</p>
+  </header>
+
+  <section aria-labelledby="stages-h">
+    <h2 id="stages-h" class="eyebrow" style="font-family:var(--font-body);font-size:14px">איפה אנחנו</h2>
+    <ol class="stages">
+      <li class="now"><span class="n">1 · עכשיו</span><span class="t">תוכנית</span></li>
+      <li><span class="n">2</span><span class="t">שפה עיצובית</span></li>
+      <li><span class="n">3</span><span class="t">תסריטים, קריינות, מוזיקה</span></li>
+      <li><span class="n">4</span><span class="t">הפקת הסרטונים</span></li>
+      <li><span class="n">5</span><span class="t">הקלטת קריינות</span></li>
+      <li><span class="n">6</span><span class="t">אתר, אמנה וחתימות</span></li>
+      <li><span class="n">7</span><span class="t">הודעות וטיזרים</span></li>
+      <li><span class="n">8</span><span class="t">לו"ז ויציאה לדרך</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="what-h">
+    <h2 id="what-h">במשפט אחד</h2>
+    <p class="lead">סדרה של 8 סרטונים קצרים לתושבי צופים. כל סרטון עוסק בנושא אחד ומגובה במחקר. הסדרה מובילה בהדרגה ל<span class="mark">אמנה קהילתית לדחיית הסמארטפון הראשון</span>, שאפשר לחתום עליה באתר.</p>
+    <div class="goals">
+      <div><b>מודעות</b><span>הורים מכירים כמה עובדות מחקריות פשוטות על סמארטפון בגיל צעיר.</span></div>
+      <div><b>שיח</b><span>הנושא עולה בקבוצות הכיתה, בבית ובאסיפות.</span></div>
+      <div><b>חתימה</b><span>משפחות חותמות על האמנה, וכל אחד רואה שהוא לא לבד.</span></div>
+    </div>
+  </section>
+
+  <section class="insight" aria-labelledby="ins-h">
+    <span class="eyebrow" id="ins-h">התובנה שעליה בנוי הכול</span>
+    <p class="big">להורים לא חסר ידע. הם לא רוצים להיות "ההורה היחיד שאמר לא".</p>
+    <p class="muted">רוב ההורים היו שמחים לחכות, בתנאי שאחרים מחכים איתם. זו מלכודת קולקטיבית, ואמנה משותפת היא הדרך הפשוטה לצאת ממנה. לכן הסרטונים לא נועדו להפחיד. הם נועדו לתת סיבה טובה לחכות, ואחר כך להראות שאפשר לחכות ביחד.</p>
+  </section>
+
+  <section aria-labelledby="fmt-h">
+    <h2 id="fmt-h">איך נראה כל סרטון</h2>
+    <p class="muted">25 עד 40 שניות, אנכי לטלפון, עם כתוביות כי רוב הצפייה בלי סאונד. המבנה קבוע בכל הסדרה. כאן הוא מצויר בקנה מידה, לסרטון של 35 שניות:</p>
+    <div class="anatomy" aria-label="מבנה סרטון של 35 שניות">
+      <div class="bar">
+        <div class="seg-hook" style="flex:2" title="הוק, שניות 0 עד 2">הוק</div>
+        <div class="seg-sting" style="flex:1" title="פתיח, שנייה 2 עד 3"></div>
+        <div class="seg-fact" style="flex:23" title="העובדה והמקור, שניות 3 עד 26">העובדה + המקור על המסך</div>
+        <div class="seg-drip" style="flex:5" title="טפטוף האמנה, שניות 26 עד 31">אמנה</div>
+        <div class="seg-close" style="flex:4" title="סגיר, שניות 31 עד 35">סגיר</div>
+      </div>
+      <div class="ticks" aria-hidden="true"><span style="right:0">0″</span><span class="mid" style="right:28.57%">10″</span><span class="mid" style="right:57.14%">20″</span><span style="left:0">35″</span></div>
+      <ul class="legend">
+        <li><span class="sw seg-hook"></span><span><b>הוק, 2 שניות:</b> שאלה או מספר שעוצרים את הגלילה</span></li>
+        <li><span class="sw seg-sting"></span><span><b>פתיח זהה, שנייה:</b> אחרי ההוק ולא לפניו</span></li>
+        <li><span class="sw seg-fact"></span><span><b>עובדה אחת</b> ושם המחקר על המסך</span></li>
+        <li><span class="sw seg-drip"></span><span><b>רמז לאמנה</b>, מסרטון 4 ואילך</span></li>
+        <li><span class="sw seg-close"></span><span><b>סגיר זהה:</b> שם הקמפיין, ההנהגה, כתובת האתר</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="eps-h">
+    <h2 id="eps-h">שמונת הפרקים</h2>
+    <p class="muted">ההוקים הם טיוטה. המחקרים הם רשימה ראשונית, וכל אחד מהם ייקרא ויאומת לפני שמספר ממנו נכנס לסרטון.</p>
+    <ol class="eps">
+      <li><span class="num">1</span><span class="topic">שינה</span><span class="tag aware">מודעות</span>
+        <span class="hook">"איפה הטלפון של הילד שלך ישן בלילה?"</span>
+        <span class="src">Carter et al., JAMA Pediatrics, 2016</span></li>
+      <li><span class="num">2</span><span class="topic">קשב ולמידה</span><span class="tag aware">מודעות</span>
+        <span class="hook">"הטלפון כבוי. והוא עדיין מפריע."</span>
+        <span class="src">Ward et al., 2017 · Beland &amp; Murphy, Labour Economics, 2016</span></li>
+      <li><span class="num">3</span><span class="topic">מכונת הלייקים</span><span class="tag aware">מודעות</span>
+        <span class="hook">"המוח של ילד בן 11 על לייק"</span>
+        <span class="src">Sherman et al., Psychological Science, 2016 · Maza et al., JAMA Pediatrics, 2023</span></li>
+      <li><span class="num">4</span><span class="topic">מצב רוח</span><span class="tag drip">רמז ראשון</span>
+        <span class="hook">"3 שעות ביום. זה המספר."</span>
+        <span class="src">Riehm et al., JAMA Psychiatry, 2019</span></li>
+      <li><span class="num">5</span><span class="topic">עיניים וגוף</span><span class="tag drip">"לא לבד"</span>
+        <span class="hook">"ילדים היום רואים פחות טוב למרחק"</span>
+        <span class="src">Foreman et al., Lancet Digital Health, 2021</span></li>
+      <li><span class="num">6</span><span class="topic">בן כמה זה מוקדם מדי?</span><span class="tag drip">חשיפת הרעיון</span>
+        <span class="hook">"12. הגיל שבו זה משתנה."</span>
+        <span class="src">Barzilay et al., Pediatrics, 2025 · Sapien Labs, 2025</span></li>
+      <li><span class="num">7</span><span class="topic">"אבל לכולם יש"</span><span class="tag drip">שם האמנה + תאריך</span>
+        <span class="hook">"מה אם כולם מחכים, ופשוט אף אחד לא אומר?"</span>
+        <span class="src">Bursztyn et al., NBER, 2023</span></li>
+      <li><span class="num">8</span><span class="topic">האמנה</span><span class="tag pact">השקה</span>
+        <span class="hook">כולו על האמנה: למה, איך היא עוזרת, ואיך חותמים</span>
+        <span class="src">סיכום הסדרה</span></li>
+    </ol>
+  </section>
+
+  <section class="pact" aria-labelledby="pact-h">
+    <h2 id="pact-h">האמנה, בקווים כלליים</h2>
+    <ul>
+      <li>משפחות מתחייבות יחד לא לקנות סמארטפון עד גיל או כיתה שנקבע יחד.</li>
+      <li>אפשר טלפון בסיסי או שעון חכם, לתקשורת ולביטחון.</li>
+      <li>האמנה "נדלקת" בכיתה כשמספיק משפחות חתמו, כדי שאף ילד לא יישאר לבד.</li>
+      <li>משפחות שכבר קנו יכולות להצטרף לרוח האמנה. בלי שיפוטיות.</li>
+      <li>באתר יופיעו רק שם ושכבה, ורק למי שהסכים במפורש.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="rules-h">
+    <h2 id="rules-h">עקרונות שאנחנו שומרים עליהם</h2>
+    <div class="rules">
+      <div><b>מדע, בהגינות</b><span>מקור על המסך בכל טענה. "קשור ל" כשהמחקר מראה קשר, "גורם ל" רק כשיש ניסוי.</span></div>
+      <div><b>בלי להפחיד ובלי להטיף</b><span>מדברים כשכנים, בטון קליל וחם.</span></div>
+      <div><b>בלי לבייש</b><span>אף הורה לא צריך להרגיש רע עם מה שכבר עשה.</span></div>
+      <div><b>בתיאום עם בית הספר</b><span>הנהלת בית הספר רואה את התכנים לפני ההשקה.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="time-h">
+    <h2 id="time-h">לו"ז ראשוני</h2>
+    <ol class="weeks">
+      <li><b>שבועות 1-2</b><span>עיצוב, תסריטים, אימות מקורות, ניסוח האמנה ואישורים</span></li>
+      <li><b>שבועות 2-3</b><span>הפקת הסרטונים, קריינות ובניית האתר</span></li>
+      <li><b>שבועות 4-7</b><span>שני סרטונים בשבוע בוואטסאפ, אינסטגרם, טיקטוק ופייסבוק</span></li>
+      <li class="launch"><b>סוף שבוע 7</b><span>השקת האמנה וערב הורים קהילתי</span></li>
+      <li><b>שבועות 8-10</b><span>דחיפה לחתימות ועדכוני "כבר חתמו X משפחות"</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="dec-h">
+    <h2 id="dec-h">מה אנחנו צריכים מכם</h2>
+    <p class="muted">חמש החלטות כדי להתקדם לשלב 2. אפשר לענות בקבוצה של הוועדה.</p>
+    <ol class="decisions">
+      <li><span class="q">1. שם הקמפיין</span>
+        <div class="opts"><span>סמארטפון? רגע.</span><span>מחכים ביחד</span><span>עוד קצת ילדות</span><span>הצעה אחרת</span></div></li>
+      <li><span class="q">2. עד מתי מחכים לפי האמנה?</span>
+        <div class="opts"><span>סוף כיתה ו'</span><span>סוף כיתה ח'</span><span>גיל 14</span></div>
+        <span class="why">זו ההחלטה הכי משמעותית בקמפיין, והיא משפיעה על כל הסרטונים מפרק 6 והלאה.</span></li>
+      <li><span class="q">3. מי יקריין?</span>
+        <div class="opts"><span>הורה מהקהילה</span><span>קול סינתטי בעברית</span></div>
+        <span class="why">קול מהקהילה אותנטי יותר. קול סינתטי מהיר וגמיש יותר לתיקונים.</span></li>
+      <li><span class="q">4. יש לוגו שצריך לשלב?</span>
+        <div class="opts"><span>לוגו בית הספר</span><span>לוגו ההנהגה</span><span>בלי לוגו</span></div></li>
+      <li><span class="q">5. שמונת הנושאים מתאימים?</span>
+        <div class="opts"><span>כן</span><span>להחליף נושא</span></div>
+        <span class="why">חלופות אפשריות: התכנים שילדים נחשפים אליהם ברשת, המסכים של ההורים עצמם, ניסויי ניתוק מרשתות.</span></li>
+    </ol>
+  </section>
+
+  <p class="note">השלב הבא: בחירת שפה עיצובית. נציג 2-3 כיוונים, עם פריים לדוגמה מכל אחד, ונבחר יחד.</p>
+
+</main>
