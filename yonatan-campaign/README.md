@@ -28,3 +28,9 @@
 בכל שלב מעדכנים את עמוד הוועדה (`committee/committee-room.html`, מתפרסם לאותו קישור) ומנסחים הודעת וואטסאפ לוועדה ב-`committee/messages.md`.
 
 - עמוד הוועדה: https://claude.ai/artifact/8CmgBBquRSY1cE3A1oKstL
+- הוועדה מתקדמת בקצב שלה. כרגע העמוד המפורסם מציג את **שלב 1**, וההחלטות שלמעלה הן הנחות עבודה עד שהוועדה תאשר אותן.
+- גרסת שלב 2 של העמוד שמורה ב-`committee/committee-room-stage2.html`. כדי לפרסם אותה, מעתיקים אותה על `committee-room.html` ומפרסמים (עם `logo.webp`).
+
+## כלים
+
+- **anidoodle** (איור והנפשה בקוד): מותקן כפלאגין ברמת הפרויקט (`.claude/settings.json` בשורש הריפו). בסשן חדש צריך להריץ `npm ci --omit=optional` בתיקיית `engine` של הפלאגין.
