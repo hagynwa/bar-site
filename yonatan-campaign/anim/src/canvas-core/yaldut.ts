@@ -38,15 +38,15 @@ export const C = {
 };
 
 // ---------------------------------------------------------------- torn and cut paper (after fox.ts)
-type Piece = { shape: P[]; color: string; torn?: number; seed: number; fibre?: number; lift?: number };
+export type Piece = { shape: P[]; color: string; torn?: number; seed: number; fibre?: number; lift?: number; off?: P; hide?: boolean };
 const normals = (s: P[]): P[] => s.map((_, i) => { const a = s[(i - 1 + s.length) % s.length], b = s[(i + 1) % s.length], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dy / l, -dx / l]; });
 const ringLen = (s: P[]) => s.reduce((a, p, i) => a + Math.hypot(p[0] - s[(i + 1) % s.length][0], p[1] - s[(i + 1) % s.length][1]), 0);
-const tear = (shape: P[], amp: number, seed: number, grow = 0): P[] => {
+export const tear = (shape: P[], amp: number, seed: number, grow = 0): P[] => {
   const n = Math.max(24, Math.round(ringLen(shape) / 2.6)), s = resample([...shape, shape[0]], n).slice(0, -1), nr = normals(s), r = rng(seed);
   return s.map(([x, y], i) => { const d = (fractal(seed, x, y, 0.09, 0.09, 3) - 0.5) * amp * 2.2 + (r() - 0.5) * amp * 0.6 + grow; return [x + nr[i][0] * d, y + nr[i][1] * d]; });
 };
-const cut = (shape: P[], seed: number): P[] => { const s = resample([...shape, shape[0]], Math.max(24, Math.round(ringLen(shape) / 4))).slice(0, -1), r = rng(seed); return s.map(([x, y]) => [x + (r() - 0.5) * 0.8, y + (r() - 0.5) * 0.8]); };
-const fibres = (g: Gfx, shape: P[], color: string, seed: number, density: number) => {
+export const cut = (shape: P[], seed: number): P[] => { const s = resample([...shape, shape[0]], Math.max(24, Math.round(ringLen(shape) / 4))).slice(0, -1), r = rng(seed); return s.map(([x, y]) => [x + (r() - 0.5) * 0.8, y + (r() - 0.5) * 0.8]); };
+export const fibres = (g: Gfx, shape: P[], color: string, seed: number, density: number) => {
   const b = bounds(shape), r = rng(seed), areaPx = (b.x1 - b.x0) * (b.y1 - b.y0), c = g.cur;
   clipped(g, shape, () => {
     for (let i = 0; i < 5; i++) fillShape(g, blob(b.x0 + r() * (b.x1 - b.x0), b.y0 + r() * (b.y1 - b.y0), 30 + r() * 110, 20 + r() * 70, seed + i, 0.4, 12, r() * 3), r() < 0.5 ? mix(color, "#ffffff", 0.14) : mix(color, "#000000", 0.1), 0.25);
@@ -57,20 +57,22 @@ const fibres = (g: Gfx, shape: P[], color: string, seed: number, density: number
   });
 };
 // one layer of paper: shadows first (soft, down and right), then the pieces with their torn white core
-const paperLayer = (g: Gfx, pieces: Piece[]) => {
-  const shapes = pieces.map((p) => (p.torn ? tear(p.shape, p.torn, p.seed) : cut(p.shape, p.seed)));
+const mv = (s: P[], o?: P): P[] => (o ? s.map(([x, y]) => [x + o[0], y + o[1]] as P) : s);
+export const paperLayer = (g: Gfx, all: Piece[]) => {
+  const pieces = all.filter((p) => !p.hide); if (!pieces.length) return;
+  const shapes = pieces.map((p) => mv(p.torn ? tear(p.shape, p.torn, p.seed) : cut(p.shape, p.seed), p.off));
   g.group("plain", () => pieces.forEach((p, i) => { const l = p.lift ?? 1; fillShape(g, shapes[i].map(([x, y]) => [x + 4 * l, y + 7 * l] as P), C.shadow, 0.5); }), { blur: 5, alpha: 0.42 });
   g.group("plain", () => pieces.forEach((p, i) => {
-    if (p.torn) fillShape(g, tear(p.shape, p.torn * 0.8, p.seed + 1, p.torn * 0.75), C.core);
+    if (p.torn) fillShape(g, mv(tear(p.shape, p.torn * 0.8, p.seed + 1, p.torn * 0.75), p.off), C.core);
     fillShape(g, shapes[i], p.color);
     fibres(g, shapes[i], p.color, p.seed + 2, p.fibre ?? 1);
   }));
 };
-const ring = (cx: number, cy: number, rx: number, ry = rx, n = 48, a0 = 0): P[] => Array.from({ length: n }, (_, i) => { const a = a0 + (i / n) * Math.PI * 2; return [cx + Math.cos(a) * rx, cy + Math.sin(a) * ry] as P; });
-const rect = (x0: number, y0: number, x1: number, y1: number): P[] => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
-const star = (x: number, y: number, r1: number, r0: number, rot = 0): P[] => Array.from({ length: 10 }, (_, k) => { const a = -Math.PI / 2 + rot + (k / 10) * Math.PI * 2, rr = k % 2 ? r0 : r1; return [x + Math.cos(a) * rr, y + Math.sin(a) * rr] as P; });
+export const ring = (cx: number, cy: number, rx: number, ry = rx, n = 48, a0 = 0): P[] => Array.from({ length: n }, (_, i) => { const a = a0 + (i / n) * Math.PI * 2; return [cx + Math.cos(a) * rx, cy + Math.sin(a) * ry] as P; });
+export const rect = (x0: number, y0: number, x1: number, y1: number): P[] => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+export const star = (x: number, y: number, r1: number, r0: number, rot = 0): P[] => Array.from({ length: 10 }, (_, k) => { const a = -Math.PI / 2 + rot + (k / 10) * Math.PI * 2, rr = k % 2 ? r0 : r1; return [x + Math.cos(a) * rr, y + Math.sin(a) * rr] as P; });
 // a scissor-cut crescent: the outer disc minus a disc pushed toward `ang`
-const crescent = (cx: number, cy: number, r1: number, r2: number, d: number, ang: number): P[] => {
+export const crescent = (cx: number, cy: number, r1: number, r2: number, d: number, ang: number): P[] => {
   const phi = Math.acos((d * d + r1 * r1 - r2 * r2) / (2 * d * r1)), c2: P = [cx + Math.cos(ang) * d, cy + Math.sin(ang) * d], out: P[] = [];
   for (let i = 0; i <= 40; i++) { const a = ang + phi + (i / 40) * (Math.PI * 2 - 2 * phi); out.push([cx + Math.cos(a) * r1, cy + Math.sin(a) * r1]); }
   const b0 = Math.atan2(out[out.length - 1][1] - c2[1], out[out.length - 1][0] - c2[0]), b1 = Math.atan2(out[0][1] - c2[1], out[0][0] - c2[0]);
@@ -82,14 +84,19 @@ const crescent = (cx: number, cy: number, r1: number, r2: number, d: number, ang
 };
 
 // ---------------------------------------------------------------- wax crayon (after balloon.ts)
-const scribble = (g: Gfx, region: P[], color: string, o: { angle: number; gap: number; w: number; alpha: number; seed: number; keep?: (x: number, y: number) => boolean }) => {
-  const { angle, gap, w, alpha, seed, keep = () => true } = o, r = rng(seed), b = bounds(region);
-  const runs = hatchRuns({ x0: b.x0 - 8, y0: b.y0 - 8, x1: b.x1 + 8, y1: b.y1 + 8 }, angle, gap, (x, y) => inside(region, x, y) && keep(x, y), 5, seed);
+export const scribble = (g: Gfx, region: P[], color: string, o: { angle: number; gap: number; w: number; alpha: number; seed: number; keep?: (x: number, y: number) => boolean; p?: number }) => {
+  const { angle, gap, w, alpha, seed, keep = () => true, p = 1 } = o; if (p <= 0) return; const r = rng(seed), b = bounds(region);
+  const rk = `yd:runs:${seed}:${angle}:${gap}:${region.length}:${region[0][0].toFixed(2)},${region[0][1].toFixed(2)}:${region[region.length >> 1][0].toFixed(2)},${region[region.length >> 1][1].toFixed(2)}`;
+  let runs = g.env.cache.get(rk) as P[][] | undefined;
+  if (!runs) { runs = hatchRuns({ x0: b.x0 - 8, y0: b.y0 - 8, x1: b.x1 + 8, y1: b.y1 + 8 }, angle, gap, (x, y) => inside(region, x, y) && keep(x, y), 5, seed); g.env.cache.set(rk, runs); }
   const c = g.cur; g.touch(b.x0 - 14, b.y0 - 14, b.x1 + 14, b.y1 + 14);
   c.save(); c.lineCap = "round"; c.lineJoin = "round"; c.strokeStyle = color; c.lineWidth = w;
   let prev: P | null = null;
+  const lim = p * runs.length;
   runs.forEach((run, i) => {
-    const pts = (i % 2 ? [...run].reverse() : run).filter((_, k, a) => k % 3 === 0 || k === a.length - 1).map(([x, y]) => [x + (r() - 0.5) * 1.8, y + (r() - 0.5) * 1.8] as P);
+    if (i >= lim) return;
+    let pts = (i % 2 ? [...run].reverse() : run).filter((_, k, a) => k % 3 === 0 || k === a.length - 1).map(([x, y]) => [x + (r() - 0.5) * 1.8, y + (r() - 0.5) * 1.8] as P);
+    if (lim - i < 1) pts = pts.slice(0, Math.max(2, Math.ceil(pts.length * (lim - i))));
     const jump = prev ? Math.hypot(pts[0][0] - prev[0], pts[0][1] - prev[1]) : 0;
     c.globalAlpha = alpha * (0.7 + r() * 0.4); c.beginPath();
     if (prev && jump < gap * 3.2) { c.moveTo(prev[0], prev[1]); pts.forEach(([x, y]) => c.lineTo(x, y)); } else pts.forEach(([x, y], k) => (k ? c.lineTo(x, y) : c.moveTo(x, y)));
@@ -97,7 +104,7 @@ const scribble = (g: Gfx, region: P[], color: string, o: { angle: number; gap: n
   });
   c.restore();
 };
-const wax = (g: Gfx, fn: () => void) => g.group("plain", fn, { textures: ["pencilTooth"] });
+export const wax = (g: Gfx, fn: () => void) => g.group("plain", fn, { textures: ["pencilTooth"] });
 
 // ---------------------------------------------------------------- the notebook page
 export const notebook = (g: Gfx, W: number, H: number) => {
@@ -110,14 +117,16 @@ export const notebook = (g: Gfx, W: number, H: number) => {
   });
 };
 // marker lettering, right to left; a second faint pass where the felt tip pooled
-export const marker = (g: Gfx, text: string, x: number, y: number, px: number, color = C.marker, w = 800) => {
+export const marker = (g: Gfx, text: string, x: number, y: number, px: number, color = C.marker, w = 800, p = 1) => {
+  if (p <= 0) return 0;
   const c = g.cur; c.save(); c.font = HAND(w, px); c.direction = "rtl"; c.textAlign = "right"; c.textBaseline = "alphabetic";
   const m = c.measureText(text); g.touch(x - m.width - 10, y - px * 1.1, x + 10, y + px * 0.4);
+  if (p < 1) { c.beginPath(); c.rect(x - m.width * p - 4, y - px * 1.3, m.width * p + 30, px * 1.9); c.clip(); }
   c.fillStyle = color; c.globalAlpha = 0.94; c.fillText(text, x, y); c.globalAlpha = 0.22; c.fillText(text, x + 1.2, y + 0.8);
   c.restore(); return m.width;
 };
-const measure = (g: Gfx, text: string, px: number, w = 800) => { const c = g.cur; c.save(); c.font = HAND(w, px); c.direction = "rtl"; const m = c.measureText(text).width; c.restore(); return m; };
-const tape = (g: Gfx, x: number, y: number, len: number, ang: number, seed: number) => {
+export const measure = (g: Gfx, text: string, px: number, w = 800) => { const c = g.cur; c.save(); c.font = HAND(w, px); c.direction = "rtl"; const m = c.measureText(text).width; c.restore(); return m; };
+export const tape = (g: Gfx, x: number, y: number, len: number, ang: number, seed: number) => {
   const r = rng(seed), half = len / 2, wdt = 26, raw: P[] = [];
   for (let i = 0; i <= 6; i++) raw.push([-half + (r() - 0.5) * 6, -wdt + (i / 6) * wdt * 2]);
   const right: P[] = []; for (let i = 0; i <= 6; i++) right.push([half + (r() - 0.5) * 6, wdt - (i / 6) * wdt * 2]);
