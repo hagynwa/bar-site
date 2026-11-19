@@ -53,12 +53,11 @@ const highlight = (g: Gfx, f: number, text: string, y: number, px: number, at: n
   const w = measure(g, text, px);
   g.group("plain", () => scribble(g, rect(RX - w - 16, y - px * 0.42, RX + 14, y + 16), color, { angle: -0.12, gap: 8, w: 9, alpha: 0.9, seed, p: span(f, at, at + 12) }), { textures: ["pencilTooth"], blend: "multiply" });
 };
-// the campaign stamp, top left: the logo as a white sticker, pressed on right after the hook (the same in every episode)
+// the campaign stamp, top left: the logo straight on the page (transparent), dropped in right after the hook (the same in every episode)
 const size = (img: CanvasImageSource): P => { const i = img as HTMLImageElement; return [i.naturalWidth || i.width, i.naturalHeight || i.height]; };
 const stamp = (g: Gfx, f: number) => {
   const img = g.env.image?.("yaldutH"); if (f < 60 || !img) return;
   const [iw, ih] = size(img), w = 330, h = (w * ih) / iw, x0 = 36, y0 = 112, d = lay(f, 60, 10, [0, -46]);
-  paperLayer(g, [{ shape: rect(x0 - 10, y0 - 8, x0 + w + 10, y0 + h + 8), color: "#FFFFFF", torn: 1.6, seed: 41, fibre: 0.2, lift: 0.6 * d.lift, off: d.off, hide: d.hide }]);
   if (!d.hide) g.group("plain", () => { g.cur.drawImage(img, x0 + d.off[0], y0 + d.off[1], w, h); g.touch(x0, y0, x0 + w, y0 + h + 60); });
 };
 // subtitles: on a torn white paper label, centred, under the collage (Rubik, legible at phone size)
