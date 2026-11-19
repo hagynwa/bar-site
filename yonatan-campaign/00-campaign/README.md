@@ -3,7 +3,7 @@
 | מה | איפה |
 |---|---|
 | התוכנית המלאה | https://claude.ai/artifact/Hr1rMD1nQDXAqWf1kM7NyH |
-| הגרסה הקצרה לוועדה | https://claude.ai/artifact/hXxMX6hHUPxvCTgKigHMBH |
+| הגרסה הקצרה לוועדה | https://claude.ai/artifact/37MG2p5atnSAGJX6qpdRdB |
 | מקור התוכנית המלאה | [`plan.md`](plan.md), נבנה ל-`plan.html` בעזרת `build_plan.py` |
 | מקור הגרסה הקצרה | [`brief.html`](brief.html) |
 
