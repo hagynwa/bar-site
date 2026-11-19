@@ -1,0 +1,430 @@
+<title>עוד קצת ילדות בקצרה</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playpen+Sans+Hebrew:wght@500..800&family=Rubik:wght@400..700&display=swap">
+<style>
+/* layout: a right-to-left run of full-width bands, one idea per band, sized to its content so it reads on a projector and on a phone */
+:root {
+  --bg: #FBFAF3; --surface: #FFFFFF; --ink: #001A3F; --muted: #46506B; --line: #E2DFCF;
+  --green: #4A7302; --leaf: #EDF6D8; --sun: #FECC0C; --sun-soft: #FFF3C2; --on-sun: #001A3F;
+  --band: #001A3F; --on-band: #FBFAF3; --on-band-muted: #C9D2E4;
+  --display: 'Playpen Sans Hebrew', 'Rubik', 'Arial Hebrew', Arial, sans-serif;
+  --text: 'Rubik', 'Arial Hebrew', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0A1529; --surface: #11203C; --ink: #F2F0E6; --muted: #B5BFD4; --line: #293A5C;
+  --green: #B5D96E; --leaf: #1B3020; --sun: #FECC0C; --sun-soft: #3B3310; --on-sun: #001A3F;
+  --band: #16284A; --on-band: #F2F0E6; --on-band-muted: #C9D2E4; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0A1529; --surface: #11203C; --ink: #F2F0E6; --muted: #B5BFD4; --line: #293A5C;
+  --green: #B5D96E; --leaf: #1B3020; --sun: #FECC0C; --sun-soft: #3B3310; --on-sun: #001A3F;
+  --band: #16284A; --on-band: #F2F0E6; --on-band-muted: #C9D2E4; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--text); font-size: 18px; line-height: 1.55; direction: rtl; text-align: right; }
+section { border-bottom: 1px solid var(--line); }
+.in { max-width: 1120px; margin-inline: auto; padding-block: 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 22px; }
+.eyebrow { margin: 0; font-size: 15px; font-weight: 600; color: var(--green); }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+h1 { font-weight: 800; font-size: clamp(40px, 7vw, 76px); line-height: 1.2; }
+h2 { font-weight: 800; font-size: clamp(28px, 4.2vw, 44px); line-height: 1.25; }
+h3 { font-weight: 700; font-size: 21px; line-height: 1.3; }
+p { margin: 0; }
+.lead { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.55; max-width: 62ch; }
+.note { color: var(--muted); max-width: 75ch; }
+.statement { font-size: clamp(34px, 6vw, 68px); }
+/* bands */
+.dark { background: var(--band); color: var(--on-band); border-bottom: 0; }
+.dark .eyebrow { color: var(--sun); }
+.dark .note, .dark .lead { color: var(--on-band-muted); }
+.sunny { background: var(--sun); color: var(--on-sun); border-bottom: 0; }
+.sunny .eyebrow, .sunny .lead { color: var(--on-sun); }
+/* cover */
+.cover .in { align-items: flex-start; padding-block: 48px 56px; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand svg { width: 96px; height: auto; flex: none; }
+.brand-name { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1.2; }
+.by { color: var(--muted); font-size: 15px; }
+.links { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 15px; }
+.links a { color: var(--green); }
+/* grids */
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.g5 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.card { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.card p { font-size: 16px; line-height: 1.5; color: var(--muted); }
+.card.hot { background: var(--sun-soft); border-color: var(--sun); }
+.card.leaf { background: var(--leaf); border-color: transparent; }
+.card p.num { font-family: var(--display); font-weight: 800; font-size: 46px; line-height: 1.15; color: var(--green); font-variant-numeric: tabular-nums; }
+.card p.step { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; color: var(--green); }
+.card p.so { font-weight: 600; color: var(--green); font-size: 16px; }
+.when, .card p.when { font-size: 14.5px; font-weight: 600; color: var(--green); }
+.card p.quote { font-size: 20px; line-height: 1.5; font-weight: 500; color: var(--ink); }
+.dark .card { background: transparent; border-color: #3A4C73; }
+.dark .card p { color: var(--on-band-muted); }
+.dark .card h3 { color: var(--on-band); }
+.pill { align-self: flex-start; background: var(--sun); color: var(--on-sun); font-weight: 600; font-size: 18px; line-height: 1.4; padding: 10px 22px; border-radius: 28px; }
+/* tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 16px; line-height: 1.45; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; vertical-align: top; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+th { background: var(--leaf); font-weight: 600; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-weight: 600; }
+tr.total td { background: var(--sun-soft); font-weight: 700; }
+/* phases */
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.phase { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.phase h3 { background: var(--leaf); padding: 8px 14px; font-size: 19px; }
+.phase.sign h3 { background: var(--sun); color: var(--on-sun); }
+.phase div { padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+.phase ul { margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 1.45; color: var(--muted); display: flex; flex-direction: column; gap: 3px; }
+ol.big { margin: 0; padding-inline-start: 1.4em; display: flex; flex-direction: column; gap: 12px; font-size: clamp(18px, 2.1vw, 23px); line-height: 1.45; max-width: 70ch; }
+ol.plain, ul.plain { margin: 0; padding-inline-start: 1.3em; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: start; }
+.cols > * { min-width: 0; }
+.bignum { font-family: var(--text); font-weight: 700; font-size: clamp(54px, 9vw, 96px); line-height: 1.1; color: var(--green); font-variant-numeric: tabular-nums; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+@media (max-width: 560px) { body { font-size: 17px; } .in { padding-block: 40px; } }
+</style>
+
+<section class="cover"><div class="in">
+<div class="brand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" aria-hidden="true"><g stroke="#FECC0C" stroke-width="7" stroke-linecap="round"><line x1="80" y1="22" x2="80" y2="10"/><line x1="54" y1="30" x2="47" y2="21"/><line x1="106" y1="30" x2="113" y2="21"/><line x1="38" y1="52" x2="27" y2="49"/><line x1="122" y1="52" x2="133" y2="49"/></g><circle cx="80" cy="66" r="34" fill="#FECC0C"/><path d="M2 104 Q40 62 78 78 Q110 90 134 104 Z" fill="#699F03"/><path d="M60 104 Q100 76 158 104 Z" fill="#B5D96E"/></svg><span class="brand-name">עוד קצת ילדות</span></div>
+<h1>הקמפיין בקצרה</h1>
+<p class="lead">ארבעה חודשים, יותר ממאה סרטונים, אמנה אחת: בלי סמארטפון עד סוף כיתה ז'.</p>
+<p class="by">מוצג לוועדת הטלפונים · הנהגת ההורים, בית ספר יונתן, צופים · גרסה 3, 19 בנובמבר 2026</p>
+<p class="links"><a href="https://claude.ai/artifact/Hr1rMD1nQDXAqWf1kM7NyH">התוכנית המלאה, עם כל הטבלאות</a></p>
+</div></section>
+
+<section class="dark"><div class="in">
+<p class="eyebrow">מטרת הקמפיין</p>
+<h2 class="statement">בצופים לא קונים לילד סמארטפון לפני סוף כיתה ז'.</h2>
+<p class="lead">מי שצריך טלפון מקבל טלפון בסיסי. סמארטפון הוא לא מתנת בר מצווה ולא מתנת בת מצווה.</p>
+<p class="pill">היעד: חצי ממשפחות יונתן חתומות עד ראש חודש ניסן, 8 באפריל 2027</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">יעדי הקמפיין</p>
+<h2>מה נמדוד בטקס החתימה</h2>
+<div class="grid g5">
+<div class="card"><p class="num">50%</p><h3>ממשפחות יונתן חתומות</h3><p>באחד משלושת מסלולי האמנה.</p></div>
+<div class="card"><p class="num">70%</p><h3>מהורי גן חובה עד ג'</h3><p>עוד לא קנו. כאן נבנית הנורמה.</p></div>
+<div class="card"><p class="num">50%</p><h3>מהורי ד'-ה'</h3><p>כאן קונים היום את הטלפון הראשון.</p></div>
+<div class="card"><p class="num">25%</p><h3>מהורי ו'-ז' חוזרים אחורה</h3><p>ועוד 40% "ברוח האמנה". זו הקבוצה הקשה.</p></div>
+<div class="card"><p class="num" dir="ltr">+20</p><h3>נקודות בשינוי עמדות</h3><p>הורים שאומרים "זה מזיק", בין סקר הפתיחה לסקר הסיום.</p></div>
+</div>
+<p class="note">ועוד שלושה: כללים כתובים בבית הספר, בסניף ובחוגים עד 1 במרץ. 60% מהחותמים חותמים גם על חלק ההורים. 85% עדיין באמנה אחרי שנה.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">נקודת המוצא</p>
+<h2>ארבע עובדות שמכתיבות את התוכנית</h2>
+<div class="grid g4">
+<div class="card"><h3>900 משפחות, רוב דתי</h3><p>שני שלישים מהילדים בגיל יסודי דתיים. הקהל הוא קהילת יונתן והגנים.</p><p class="so">לכן: מדברים דתית, בלי להתנצל.</p></div>
+<div class="card"><h3>ההורים לא משוכנעים</h3><p>חלק חושבים שזה מוגזם, חלק חושבים שאין ברירה, וחלק כבר קנו.</p><p class="so">לכן: מתחילים מהנזק ומהתועלת, לא מהאמנה.</p></div>
+<div class="card"><h3>בכיתות ו'-ז' רובם כבר קנו</h3><p>אמנה עד סוף ז' פוגשת שכבות שבהן לילדים כבר יש סמארטפון.</p><p class="so">לכן: נורמה מלאה מלמטה, ומסלולי חזרה לגדולים.</p></div>
+<div class="card"><h3>גיל 13 הוא עוגן</h3><p>סוף ז' הוא גיל בר המצווה, והגיל שמשרד הבריאות ממליץ עליו לסמארטפון.</p><p class="so">לכן: שוברים את מנהג "סמארטפון לבר מצווה".</p></div>
+</div>
+</div></section>
+
+<section class="sunny"><div class="in">
+<p class="eyebrow">הרעיון המרכזי</p>
+<h2 class="statement">"לשער של צופים יש שומר. לכיס של הילד אין."</h2>
+<p class="lead">בחרנו ביישוב שמור, בבית ספר שמור ובסניף שמור. אחר כך אנחנו שמים לילד בכיס מכשיר שדרכו נכנס כל העולם, בלי שומר. המשפט לא מאשים אף אחד. הוא מראה את הפער.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">האסטרטגיה</p>
+<h2>חמישה מנועים שעובדים במקביל</h2>
+<div class="grid g5">
+<div class="card"><p class="step">1</p><h3>הפגזה</h3><p>תוכן חדש בכל יום, בכל ערוץ. הורה משתכנע כשהוא פוגש את אותו רעיון שלושים פעם, מעשרה אנשים.</p></div>
+<div class="card"><p class="step">2</p><h3>קהל שבוי</h3><p>מגיעים לרגעים שבהם הורים כבר יושבים ומקשיבים: יום הורים, מסיבת סידור, בית הכנסת, התיק של הילד.</p></div>
+<div class="card"><p class="step">3</p><h3>רגעי הלם</h3><p>מה ילד בן 11 רואה בעשר דקות, מה מספרים הבוגרים של היישוב, מה ענו הילדים שלנו בסקר.</p></div>
+<div class="card"><p class="step">4</p><h3>סגירת דרכי המילוט</h3><p>כללים בבית הספר ובסניף, ומערך תמיכה. לא נשאר "צריך בשביל הקבוצה".</p></div>
+<div class="card"><p class="step">5</p><h3>סגירת עסקה</h3><p>הצבעה באסיפת הכיתה, שולחן ביציאה מההרצאה, ופנייה אישית של שגריר.</p></div>
+</div>
+<p class="note"><strong>ומעל כולם, דוגמה אישית.</strong> קמפיין של הורים עם טלפון ביד לא יעבוד. ההורים חותמים על חלק משלהם, והמטה ראשון.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">חידוד מסרים</p>
+<h2>כל פריט תוכן: נזק, תועלת, צעד</h2>
+<div class="table-wrap"><table>
+<tr><th>הנזק</th><th>התועלת של ההמתנה</th><th>הצעד</th></tr>
+<tr><td>שינה קצרה ופחות טובה</td><td>ילד שקם בבוקר בלי מלחמה</td><td>הטלפונים של כל הבית ישנים במטבח</td></tr>
+<tr><td>קשב ולימוד</td><td>ילד שמסוגל לקרוא, ללמוד ולהתפלל בלי לבדוק כיס</td><td>שיעורי בית בחדר בלי מסך</td></tr>
+<tr><td>מכונת הלייקים</td><td>ילד שהערך שלו לא נמדד בלייקים</td><td>בלי רשתות חברתיות עד סוף ז'</td></tr>
+<tr><td>חרדה ומצב רוח</td><td>ילד שמח יותר, ורגוע יותר בבית</td><td>שעה בחוץ בכל יום</td></tr>
+<tr><td>מה נכנס דרך הכיס: תוכן מיני ואלים, זרים, חרם</td><td>עוד כמה שנים של תמימות</td><td>טלפון בסיסי, בלי דפדפן</td></tr>
+<tr><td>הבית והשבת</td><td>שולחן שבת שמדברים בו</td><td>שעת בית בלי מסך, גם להורים</td></tr>
+</table></div>
+<div class="grid g3">
+<div class="card hot"><p class="quote">"לשער של צופים יש שומר. לכיס של הילד אין."</p></div>
+<div class="card"><p class="quote">"סמארטפון יהיה לו כל החיים. ילדות יש רק פעם אחת."</p></div>
+<div class="card"><p class="quote">"אף אחד לא רוצה להיות ההורה היחיד שאמר לא. לכן אומרים את זה ביחד."</p></div>
+</div>
+<p class="note">הצעה לוועדה: הנושא "מה נכנס דרך הכיס" חסר בשמונת הפרקים, והוא החזק ביותר בקהילה דתית. הוא נכנס במקום פרק העיניים.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">הטון</p>
+<h2>חד, ישיר, ובגובה העיניים</h2>
+<div class="cols">
+<ol class="plain">
+<li><strong>אומרים את הנזק במילים פשוטות.</strong> "זה פוגע בשינה שלו". המקור המלא באתר.</li>
+<li><strong>מפחידים ונותנים מוצא.</strong> כל נזק מגיע עם צעד אחד לשבוע הזה.</li>
+<li><strong>מדברים דתית.</strong> שבת, תפילה, לימוד, שמירת העיניים, בר מצווה.</li>
+<li><strong>צוחקים על עצמנו.</strong> ההורה עם הטלפון ביד הוא חלק מהסיפור.</li>
+<li><strong>לא יורדים על אדם.</strong> אין מילה רעה על הורה מסוים או על ילד מסוים.</li>
+</ol>
+<div class="card hot"><h3>שני קווים אדומים</h3><p>לא משקרים במספרים, ולא מביישים ילד. קמפיין שנתפס בשקר אחד מאבד את כל השאר. קמפיין שפגע בילד מאבד את ההורים שלו ואת החברים שלהם.</p></div>
+</div>
+</div></section>
+
+<section class="dark"><div class="in">
+<p class="eyebrow">שיטות השפעה</p>
+<h2>שבעה רגעים שמשנים דעה</h2>
+<div class="grid g4">
+<div class="card"><h3>ניסוי עשר הדקות</h3><p>חשבון חדש של ילד בן 11. גוללים עשר דקות, מתעדים מה עולה, ומקרינים.</p></div>
+<div class="card"><h3>הבוגרים מספרים</h3><p>בני י"א-י"ב מהיישוב מספרים מה ראו בטלפון בכיתה ו'. "הלוואי שהיו מחכים איתי."</p></div>
+<div class="card"><h3>קרה אצלנו</h3><p>סיפורים אמיתיים מצופים, מטופס אנונימי, מוקראים בלי שמות.</p></div>
+<div class="card"><h3>סקר הילדים</h3><p>שאלון אנונימי לכיתות ד'-ז', באישור המנהלת והיועצת. התוצאות נחשפות בהרצאה.</p></div>
+<div class="card"><h3>חשבון הילדות</h3><p>דף בתיבת הדואר: "3 שעות ביום הן 45 ימים מלאים בשנה."</p></div>
+<div class="card"><h3>המכתב הביתה</h3><p>כל ילד כותב להורים מה הוא רוצה לעשות איתם במקום מסך.</p></div>
+<div class="card"><h3>קול קורא</h3><p>מכתב אחד, חתום בידי רבני היישוב, המנהלת ורופאת הילדים.</p></div>
+<div class="card"><h3>ומה שסוגר</h3><p>הצבעה פומבית באסיפת הכיתה, מד בשער, מדבקה על הדלת, וקיר מייסדים שנסגר בטקס.</p></div>
+</div>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">הפגזת הסרטונים</p>
+<h2>יותר מ-110 פריטים ב-11 שבועות, פריט חדש בכל יום</h2>
+<div class="cols">
+<div class="table-wrap"><table>
+<tr><th>יום</th><th>מה יוצא</th></tr>
+<tr><td>ראשון</td><td>עדות מקומית: "קרה אצלנו"</td></tr>
+<tr><td>שני</td><td>קלף עובדה, לסטטוס</td></tr>
+<tr><td>שלישי</td><td>קטע קצר של 10-15 שניות</td></tr>
+<tr><td>רביעי</td><td>המשפיעניות, ו"אבא, תניח את הטלפון"</td></tr>
+<tr><td>חמישי, 20:30</td><td>הפרק השבועי</td></tr>
+<tr><td>שישי בבוקר</td><td>הדף לשולחן שבת, בתיק של הילד</td></tr>
+<tr><td>מוצאי שבת</td><td>סיכום האתגר, ומד החתימות</td></tr>
+</table></div>
+<div class="stack">
+<div class="card hot"><h3>משימת המשפחה</h3><p>הילדים רואים את הפרק בכיתה ומקבלים ספח הביתה: "צפו עם ההורים וענו על שאלה אחת". הספח חוזר חתום. היעד: 80% מהמשפחות, בכל שבוע.</p></div>
+<div class="card"><h3>פרק לפני כל דבר</h3><p>כל אירוע ביישוב ובבית הספר נפתח בפרק של 40 שניות. לופ של הפרקים רץ בכל מקום שיש בו מסך והמתנה.</p></div>
+<div class="card"><h3>פרסום ממומן: 3,500 ₪, במטא</h3><p>ארבע עד חמש חשיפות בשבוע לכל מבוגר ביישוב. מי שצפה בפרק מקבל עדות, ואחריה הזמנה לחתום.</p></div>
+</div>
+</div>
+<p class="note">קבוצות הכיתה מקבלות שתי הודעות בשבוע בלבד, כדי שאף אחד לא ישתיק אותן. כל השאר עובר בערוץ, ב-60 סטטוסים ובפרסום הממומן.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">ערוצי הפצה: קהל שבוי</p>
+<h2>המקומות שבהם הורים כבר יושבים ומקשיבים</h2>
+<div class="table-wrap"><table>
+<tr><th>איפה</th><th>מה עושים שם</th></tr>
+<tr><td>ימי הורים</td><td>לופ במסדרון, שולחן שגרירים ביציאה, ושאלה אחת מהמחנכת בכל פגישה</td></tr>
+<tr><td>מסיבת סידור, מסיבת חומש, חנוכה</td><td>שלוש דקות, פרק, וערכה ביד לכל משפחה. גם הסבים והסבתות שם</td></tr>
+<tr><td>אסיפת כיתה</td><td>30 דקות: פרק, הבוגרים, ניסוי עשר הדקות, והצבעה על אמנת כיתה</td></tr>
+<tr><td>התיק של הילד</td><td>הדף לשולחן שבת, משימת המשפחה, המכתב הביתה. מגיע לכל משפחה</td></tr>
+<tr><td>בתי הכנסת</td><td>טור שבועי בעלון, הודעת גבאי, ודרשה אחת של הרב</td></tr>
+<tr><td>שיעורים וקבוצות קבועים</td><td>"חוג הבית" בא אליהם: מפגש אחד מוקדש לנושא</td></tr>
+<tr><td>הסניף</td><td>פעולה בנושא, מדריכים בלי טלפון, הודעות להורים בלבד</td></tr>
+<tr><td>השער, הטרמפיאדה, המכולת, המרפאה</td><td>שלט השער, מדבקות, ועמדת "עשר דקות" בימי שישי</td></tr>
+<tr><td>הרישום לכיתה א' ולגנים</td><td>דף האמנה בתוך ערכת הרישום</td></tr>
+</table></div>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">המשפיעניות של היישוב</p>
+<h2>לא עוד ערוץ הפצה. הפנים של הקמפיין</h2>
+<div class="grid g4">
+<div class="card hot"><h3>היומן</h3><p>משפחה אחת מתעדת בזמן אמת את התהליך בבית: הוויכוח, שבוע הקופסה, קניית הטלפון הבסיסי. פרק בשבוע, עם הקשיים.</p></div>
+<div class="card"><h3>המראיינת</h3><p>מנחה את "קרה אצלנו" ואת "הבוגרים מספרים".</p></div>
+<div class="card"><h3>מובילת האתגרים</h3><p>פותחת כל אתגר בסרטון, ומכריזה על הכיתות המנצחות.</p></div>
+<div class="card"><h3>השגרירה החיצונית</h3><p>מספרת לקהל הארצי שלה על "היישוב שהחליט לחכות", ומביאה את הסיפור לתקשורת המגזרית.</p></div>
+</div>
+<ol class="plain">
+<li><strong>מיפוי, עד 6 בדצמבר:</strong> שם, פלטפורמה, עוקבים, כמה מהם מצופים, ומי במטה מכיר אותה.</li>
+<li><strong>גיוס, בדצמבר:</strong> ערב סגור. הן רואות את הפרקים לפני כולם ולוקחות תפקיד.</li>
+<li><strong>לוח תוכן</strong> לכל שלב, מהשמשות ועד חתימה בשידור חי.</li>
+<li><strong>מדידה:</strong> לכל אחת קישור משלה, כדי לדעת כמה חתימות היא הביאה.</li>
+</ol>
+<p class="note">הן מספרות רק מה שהן עושות באמת, בקול שלהן, והשיתוף עם הנהגת ההורים גלוי. היעד בתקשורת: שלוש כתבות עד הטקס.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">דוגמה אישית</p>
+<h2>"גם אנחנו": החלק של ההורים באמנה</h2>
+<div class="cols">
+<ol class="plain">
+<li>השולחן בלי טלפונים, בחול ובשבת.</li>
+<li>בלי טלפון באיסוף מבית הספר ובגן השעשועים.</li>
+<li>הטלפון של ההורים לא ישן בחדר השינה.</li>
+<li>שעת בית אחת ביום שבה כל הטלפונים בקופסה.</li>
+</ol>
+<div class="grid g2">
+<div class="card"><h3>המטה ראשון</h3><p>הוועדה, המנהלת, המחנכות והמדריכים מצטלמים שמים טלפון בקופסה. זה הסרטון שפותח את הקמפיין.</p></div>
+<div class="card"><h3>תעודה להורים</h3><p>פעם בחודש הילדים ממלאים בכיתה תעודה להורים, והיא הולכת הביתה.</p></div>
+<div class="card"><h3>זמן המסך שלנו</h3><p>בהרצאה כל הורה פותח את הנתון שלו. בשבוע ההורים מורידים 20%.</p></div>
+<div class="card"><h3>חניון טלפונים</h3><p>ארגז בגני השעשועים ובשער בית הספר: "הילדים מסתכלים."</p></div>
+</div>
+</div>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">שיתוף כוחות</p>
+<h2>מכל שותף מבקשים כלל אחד, בכתב</h2>
+<div class="table-wrap"><table>
+<tr><th>השותף</th><th>הכלל</th><th>מה עוד</th></tr>
+<tr><td>הנהלת יונתן והמורים</td><td>אין סמארטפונים בבית הספר, בהסעות ובטיולים. אין קבוצות וואטסאפ של ילדים. הודעות להורים בלבד</td><td>משימת המשפחה, סקר הילדים, אסיפות הכיתה</td></tr>
+<tr><td>סניף בני עקיבא וצוות נחשון</td><td>אין סמארטפונים בפעולות ובמחנות עד שבט ח'. המדריכים לא פותחים קבוצות לחניכים</td><td>כוח השטח: גרילה, 900 ערכות, שמרטפייה</td></tr>
+<tr><td>רבני היישוב והגבאים</td><td>קול קורא חתום, ודרשה אחת</td><td>טור שבועי בעלון</td></tr>
+<tr><td>מזכירות וועד היישוב</td><td>הטקס הוא אירוע של היישוב</td><td>שילוט, ערוצים רשמיים, תקציב</td></tr>
+<tr><td>מפעילי החוגים</td><td>הודעות להורים בלבד</td><td>פוסטר בחדר ההמתנה</td></tr>
+<tr><td>רופאת הילדים</td><td>חתימה על הקול הקורא</td><td>30 שניות למצלמה</td></tr>
+<tr><td>עסקים ביישוב</td><td>הטבה לחותמים</td><td>מדבקות ועמדות</td></tr>
+</table></div>
+<p class="note">הכללים האלה מבטלים את השימושים שבגללם קונים טלפון. בכל כיתה שני שגרירים, והמטה הוא שמונה תפקידים וישיבה של 20 דקות בשבוע.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">קמפיין גרילה</p>
+<h2>שמונה מהלכים שהיישוב ידבר עליהם</h2>
+<div class="grid g4">
+<div class="card hot"><h3>שלט השער</h3><p>"לשער של צופים יש שומר. לכיס של הילד אין."</p></div>
+<div class="card"><h3>השמשות</h3><p>100 שמשות קרטון מופיעות בלילה, בלי מילה. אחרי יומיים: "עוד קצת."</p></div>
+<div class="card"><h3>מיטה לטלפון</h3><p>ערכת קרטון ל-900 בתים, בלילה אחד, בידי הנוער.</p></div>
+<div class="card"><h3>הספסל</h3><p>דמויות קרטון של ילדים רכונים על מסך, על ספסל בגן השעשועים.</p></div>
+<div class="card"><h3>עמדת עשר הדקות</h3><p>ליד המכולת ביום שישי: "תגללו את מה שילד בן 11 רואה."</p></div>
+<div class="card"><h3>מוזיאון הילדות</h3><p>ביום ההורים: תמונות של ההורים כילדים, משחקים בחוץ.</p></div>
+<div class="card"><h3>מד השמש</h3><p>בשער בית הספר, שמש לכל שכבה. היא עולה עם החתימות.</p></div>
+<div class="card"><h3>קיר המייסדים</h3><p>לוח קבוע עם שמות המשפחות שחתמו עד הטקס. אחר כך הוא נסגר.</p></div>
+</div>
+<p class="note">ועוד: הטלפון הענק שהולך לישון בכיכר, חשבון הילדות בתיבות הדואר, מדבקה על כל משלוח מנות, ומדבקה לדלת של כל משפחה שחתמה. הכול יחד כ-7,200 ₪.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">האמנה</p>
+<h2>שלושה מסלולים, וכולם נספרים</h2>
+<div class="grid g3">
+<div class="card leaf"><h3>מחכים ביחד</h3><p>למי שעוד לא קנה. אין סמארטפון עד סוף כיתה ז'.</p></div>
+<div class="card leaf"><h3>חוזרים אחורה</h3><p>למי שכבר קנה. הסמארטפון מוחלף בטלפון בסיסי, או נשאר בבית בלי קו.</p></div>
+<div class="card leaf"><h3>ברוח האמנה</h3><p>למי שכבר קנה ולא מחליף. לא בחדר השינה, לא בבית הספר ובסניף, בלי רשתות, עם סינון והגבלת זמן.</p></div>
+</div>
+<div class="grid g4">
+<div class="card"><h3>מותנית</h3><p>בתוקף בשכבה כש-30% מהמשפחות חתמו.</p></div>
+<div class="card"><h3>כיתתית</h3><p>בכל אסיפת כיתה מצביעים על אמנת כיתה.</p></div>
+<div class="card"><h3>כוללת את ההורים</h3><p>"גם אנחנו" הוא חלק מהטופס.</p></div>
+<div class="card"><h3>מתחדשת</h3><p>פעם בשנה, בראש חודש ניסן.</p></div>
+</div>
+<p class="note">האמנה וולונטרית, בלי אכיפה ובלי סנקציות. הלחץ בא מהמד, מהשלט על הדלת ומקיר המייסדים.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">מנגנוני התמיכה</p>
+<h2>האתר הוא מרכז התמיכה: לא נשאר תירוץ</h2>
+<div class="grid g4">
+<div class="card hot"><h3>רכישה מרוכזת</h3><p>דף רכישה באתר: טלפון בסיסי החל מ-172 ₪ במחיר קבוצתי, חבילת שיחות בלבד, ויום חלוקה ביישוב.</p></div>
+<div class="card"><h3>עמדת ההגדרות</h3><p>מתנדבים מההייטק של היישוב מגדירים בקרת הורים וסינון בעשר דקות, בכל אירוע.</p></div>
+<div class="card"><h3>מדריכים</h3><p>מה עונים לילד שמבקש, מה עושים כשכבר יש לו, הסכם משפחתי להדפסה.</p></div>
+<div class="card"><h3>קו השאלות</h3><p>מספר וואטסאפ אחד. תשובה בתוך יום, מהיועצת או מהטכנאים.</p></div>
+<div class="card"><h3>הפניות</h3><p>מדריכי הורים ופסיכולוגים מהאזור, שעת קבלה של היועצת, מוקד 105.</p></div>
+<div class="card"><h3>במקום</h3><p>מה שהילד באמת רוצה מהטלפון: נגן מוזיקה, מצלמה, שעון. רשימה עם מחירים.</p></div>
+<div class="card"><h3>חצר פתוחה</h3><p>שעת משחק קבועה על הדשא בהפעלת הנוער, וספריית משחקים בסניף.</p></div>
+<div class="card"><h3>מתנה אחרת</h3><p>עשרים מתנות בר ובת מצווה במקום סמארטפון, עם הנחות.</p></div>
+</div>
+<div class="table-wrap"><table>
+<tr><th>אתגר</th><th>מה עושים</th><th>מתי</th></tr>
+<tr><td>100 שעות חצר</td><td>לוח על המקרר, מדבקה לכל שעה בחוץ, תעודה בטקס</td><td>22 בינואר עד 8 באפריל</td></tr>
+<tr><td>שבוע הקופסה</td><td>בכל ערב, מ-18:00 עד 20:00, כל הטלפונים של הבית בקופסה</td><td>7-13 בפברואר</td></tr>
+<tr><td>מאריכים את השבת</td><td>הטלפונים נשארים כבויים עוד שעתיים במוצאי שבת</td><td>20 בפברואר</td></tr>
+<tr><td>שבוע ההורים</td><td>זמן המסך של ההורים יורד ב-20%. הילדים שופטים</td><td>7-13 במרץ</td></tr>
+</table></div>
+<p class="note">כל אתגר נפתח בסרטון של אחת המשפיעניות ונמדד לפי כיתות. הרכישה נעשית דרך האתר והתשלום עובר ישירות לספק, כי החוק אוסר מסחר בתוך בית הספר.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">אבני דרך</p>
+<h2>מדצמבר ועד ראש חודש ניסן</h2>
+<div class="phases">
+<div class="phase"><h3>מטה</h3><div><p class="when">דצמבר</p><ul><li>המנהלת, הוועד, הרבנים</li><li>גיוס משפיעניות ושגרירים</li><li>תאריכים עם דרור</li><li>פרקים 2-8 ועדויות</li></ul></div></div>
+<div class="phase"><h3>מודדים</h3><div><p class="when">3-20 בינואר</p><ul><li>סקר פתיחה להורים</li><li>סקר הילדים</li><li>חוגי בית בקבוצות קיימות</li></ul></div></div>
+<div class="phase"><h3>מזעזעים</h3><div><p class="when">17 בינואר - 11 בפברואר</p><ul><li>השמשות ושלט השער</li><li>פרקים 1-4</li><li>ט"ו בשבט וערכה לכל בית</li><li>שבוע הקופסה</li></ul></div></div>
+<div class="phase"><h3>מעמיקים</h3><div><p class="when">16 בפברואר - 23 במרץ</p><ul><li>דרור: ערב הורים</li><li>פרקים 5-7</li><li>שבוע ההורים</li><li>דרור: הורים וילדים</li><li>אסיפות הכיתה, פורים</li></ul></div></div>
+<div class="phase sign"><h3>חותמים</h3><div><p class="when">25 במרץ - 8 באפריל</p><ul><li>פרק 8 פותח את החתימה</li><li>שבת הקמפיין</li><li>פנייה אישית לכל משפחה</li><li>טקס החתימה</li></ul></div></div>
+<div class="phase"><h3>שומרים</h3><div><p class="when">מ-11 באפריל</p><ul><li>סקר סיום</li><li>אפיקומן בלי מסך</li><li>הורי א' החדשים בספטמבר</li></ul></div></div>
+</div>
+<p class="note">אם המנהלת מאשרת בזמן, פרק הפיילוט מוקרן כבר במסיבות חנוכה, 5-12 בדצמבר.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">האירועים</p>
+<h2>שתי ההרצאות של דרור, ואיך ממלאים אולם</h2>
+<div class="grid g2">
+<div class="card hot"><p class="when">שלישי, 16 בפברואר, 20:00 · יעד: 200 הורים · 5,000 ₪</p><h3>דרור: ערב הורים</h3><p>מקהלת כיתה ו', תוצאות סקר הילדים, הבוגרים על הבמה, ניסוי עשר הדקות, ואז דרור. בסוף כל הורה פותח את זמן המסך שלו. ביציאה: עמדת ההגדרות ושולחן השגרירים.</p></div>
+<div class="card hot"><p class="when">שלישי, 16 במרץ, 17:30 · יעד: 80 משפחות · 5,000 ₪</p><h3>דרור: הורים וילדים יחד</h3><p>לכיתות ד'-ז', תשעה ימים לפני פתיחת החתימה. הילדים שומעים את הדברים ממישהו מבחוץ, וכל משפחה יוצאת עם הסכם משפחתי מלא.</p></div>
+</div>
+<div class="grid g5">
+<div class="card"><h3>אירוע של בית הספר</h3><p>ההזמנה יוצאת מהמנהלת, עם רישום לפי כיתות.</p></div>
+<div class="card"><h3>הילד שלי מופיע</h3><p>הורים באים לראות את הילד שלהם.</p></div>
+<div class="card"><h3>פרס כיתתי</h3><p>הכיתה עם ההגעה הגבוהה ביותר זוכה ביום כיף.</p></div>
+<div class="card"><h3>טלפון אישי</h3><p>השגריר מתקשר לכל משפחה. שיחה, לא הודעה.</p></div>
+<div class="card"><h3>שמרטפייה</h3><p>הסניף שומר על הילדים, כדי ששני ההורים יבואו.</p></div>
+</div>
+<p class="note">ועוד: נטיעות ט"ו בשבט (22 בינואר), אסיפות הכיתה (14-25 במרץ), שבת הקמפיין (26-27 במרץ), וטקס החתימה "יוצאים לחירות" בחמישי, 8 באפריל. ההנחה היא שדרור הוא ד"ר דרור קריקון.</p>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">תקציב</p>
+<h2>ההמלצה: כ-40,000 ₪</h2>
+<div class="cols">
+<div class="stack">
+<p class="bignum">40,000 ₪</p>
+<p class="lead">כ-44 ₪ לכל בית בצופים. הסרטונים מופקים בבית, בלי עלות.</p>
+<div class="card leaf"><h3>שלוש רמות</h3><p><strong>בסיסית, 12,000 ₪:</strong> סרטונים, הרצאה אחת ושגרירים.</p><p><strong>מומלצת, 40,000 ₪:</strong> כל בית מקבל משהו ביד, ויש פרסים שמזיזים כיתות.</p><p><strong>מקסימלית, 85,000 ₪:</strong> סבסוד של 50 ₪ למכשיר והרצאה שלישית.</p></div>
+</div>
+<div class="table-wrap"><table>
+<tr><th>סעיף</th><th>סכום</th></tr>
+<tr><td>שתי ההרצאות של דרור</td><td>10,000 ₪</td></tr>
+<tr><td>גרילה ושילוט</td><td>4,500 ₪</td></tr>
+<tr><td>תמריצים ופרסים</td><td>4,000 ₪</td></tr>
+<tr><td>טקס החתימה</td><td>4,000 ₪</td></tr>
+<tr><td>נטיעות, שבת הקמפיין וכיבוד</td><td>3,800 ₪</td></tr>
+<tr><td>פרסום ממומן במטא</td><td>3,500 ₪</td></tr>
+<tr><td>ערכה ל-900 בתים</td><td>2,700 ₪</td></tr>
+<tr><td>הפקת התוכן המקומי</td><td>2,000 ₪</td></tr>
+<tr><td>הדף לשולחן שבת ודפוס</td><td>1,500 ₪</td></tr>
+<tr><td>אתר ודומיין</td><td>300 ₪</td></tr>
+<tr><td>רזרבה</td><td>3,700 ₪</td></tr>
+<tr class="total"><td>סך הכול</td><td>40,000 ₪</td></tr>
+</table></div>
+</div>
+</div></section>
+
+<section><div class="in">
+<p class="eyebrow">סיכונים</p>
+<h2>ארבעה סיכונים, ומה עושים מראש</h2>
+<div class="grid g2">
+<div class="card hot"><h3>הורי ו'-ז' שכבר קנו מתקוממים</h3><p>שני מסלולים בשבילם, עמדת ההגדרות, והורה שכבר קנה יושב במטה ומדבר בסרטונים.</p></div>
+<div class="card"><h3>"אתם מפחידים ומגזימים"</h3><p>כל טענה עם מקור באתר, רופאת הילדים עוברת על כל פרק, ולכל נזק מוצמד צעד.</p></div>
+<div class="card"><h3>בית הספר לא מאמץ את הכללים</h3><p>זו הפגישה הראשונה, כבר בדצמבר. בלי הכללים נשאר התירוץ "צריך בשביל הקבוצה".</p></div>
+<div class="card"><h3>ילד עם סמארטפון נפגע מחברים</h3><p>הקמפיין מדבר להורים. הילדים חוגגים ולא אוכפים, והמחנכות והמדריכים מקבלים את הכלל בכתב.</p></div>
+</div>
+</div></section>
+
+<section class="dark"><div class="in">
+<p class="eyebrow">מה מחליטים היום</p>
+<h2>שמונה החלטות</h2>
+<ol class="big">
+<li><strong>היעד והתאריך:</strong> חצי ממשפחות יונתן, עד טקס ב-8 באפריל 2027.</li>
+<li><strong>האמנה:</strong> עד סוף כיתה ז', שלושה מסלולים, רף של 30% לשכבה, וחלק של הורים.</li>
+<li><strong>הכללים</strong> שמבקשים מבית הספר ומהסניף, ומי הולך לפגישות.</li>
+<li><strong>רמת התקציב,</strong> ומי פונה לוועד ולמועצה.</li>
+<li><strong>המטה:</strong> מי לוקח כל אחד משמונת התפקידים.</li>
+<li><strong>דרור:</strong> אישור לשתי ההרצאות ולתאריכים.</li>
+<li><strong>פרק "מה נכנס דרך הכיס"</strong> במקום פרק העיניים.</li>
+<li><strong>חנוכה:</strong> האם מקרינים את הפיילוט כבר במסיבות.</li>
+</ol>
+<p class="pill">השבוע הראשון של דצמבר: המנהלת, הוועד, הרבנים, המשפיעניות ודרור</p>
+</div></section>
