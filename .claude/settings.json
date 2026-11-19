@@ -9,5 +9,10 @@
   },
   "enabledPlugins": {
     "anidoodle@alexgreensh-anidoodle": true
+  },
+  "permissions": {
+    "allow": [
+      "mcp__Tonpit"
+    ]
   }
 }
